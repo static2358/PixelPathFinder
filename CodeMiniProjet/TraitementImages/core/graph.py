@@ -8,6 +8,7 @@ from PIL import Image
     - Le poids d'une arête est la différence d'intensité 2 pixels
 """
 class Graph:
+
     DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     
     # Conversion de l'image en matrice 2d
@@ -24,6 +25,22 @@ class Graph:
                 pixel_value = image.getpixel((j, i))
                 row.append(pixel_value)
             self.pixels.append(row)
+
+    # vérifie si un pixel est valide 
+    def is_valid_pixel(self, i, j):
+
+        if i < 0 and i >= self.height:
+            return False
+        
+        if j < 0 and j >= self.width:
+            return False
+        
+        return True
+    
+
+    
+
+
 
     
     
