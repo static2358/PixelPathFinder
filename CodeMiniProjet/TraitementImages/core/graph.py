@@ -62,6 +62,29 @@ class Graph:
                 neighbors.append((ni, nj))
         
         return neighbors
+    
+
+    # Retourne le poids de l'arête reliant deux pixels
+    def get_edge_weight(self, pixel1, pixel2):
+
+        i1, j1 = pixel1
+        i2, j2 = pixel2
+
+        intensity1 = self.get_pixel_value(i1, j1)
+        intensity2 = self.get_pixel_value(i2, j2)
+
+        return abs(intensity1 - intensity2)
+
+
+    # Retourne les dimensions de l'image
+    def get_dimensions(self):
+        return (self.height, self.width)
+    
+
+    # Retourne le nombre de pixels de l'image (nombre de sommets du graphe)
+    def get_total_vertices(self):
+        return self.height * self.width
+
 
     
 
