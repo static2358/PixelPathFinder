@@ -37,11 +37,12 @@ class Application:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Pathfinder")
-        self.root.geometry("1300x850")
+        self.root.geometry("1200x720")
         self.root.configure(bg=self.COLORS['bg'])
         self.root.minsize(1100, 700)
         
-        # État
+        self._set_dark_title_bar()
+        
         self.image_graph = None
         self.original_image = None
         self.display_image = None
@@ -62,7 +63,6 @@ class Application:
         self._build_ui()
     
     def _setup_styles(self):
-        """Configure les styles ttk"""
         style = ttk.Style()
         style.theme_use('clam')
         
@@ -361,6 +361,44 @@ class Application:
         b = min(255, b + 30)
         return f'#{r:02x}{g:02x}{b:02x}'
     
+    def _set_dark_title_bar(self):
+        """Configure la barre de titre en noir (Windows 10/11)"""
+        try:
+            import ctypes
+            self.root.update()
+            hwnd = ctypes.windll.user32.GetParent(self.root.winfo_id())
+            # DWMWA_USE_IMMERSIVE_DARK_MODE = 20
+            ctypes.windll.dwmapi.DwmSetWindowAttribute(
+                hwnd, 20, ctypes.byref(ctypes.c_int(1)), ctypes.sizeof(ctypes.c_int))
+        except:
+            pass  # Ignorer si non supporté
+    
+    def _get_path_color(self):
+        """Détermine la couleur du chemin selon le fond"""
+        if not self.current_path or not self.original_image:
+            return (255, 0, 0)  # Rouge par défaut
+        
+        # Échantillonner quelques pixels du chemin
+        sample_size = min(50, len(self.current_path))
+        step = max(1, len(self.current_path) // sample_size)
+        
+        red_count = 0
+        for idx in range(0, len(self.current_path), step):
+            i, j = self.current_path[idx]
+            try:
+                pixel = self.original_image.getpixel((j, i))
+                r, g, b = pixel[:3]
+                # Détecter si le pixel est rougeâtre (R dominant)
+                if r > 150 and r > g * 1.5 and r > b * 1.5:
+                    red_count += 1
+            except:
+                pass
+        
+        # Si plus de 30% du chemin est rouge, utiliser cyan
+        if red_count > sample_size * 0.3:
+            return (0, 255, 255)  # Cyan
+        return (255, 0, 0)  # Rouge
+    
     def _show_placeholder(self):
         """Affiche le placeholder sur le canvas"""
         self.canvas.delete("all")
@@ -475,10 +513,11 @@ class Application:
         img = self.original_image.copy()
         draw = ImageDraw.Draw(img)
         
-        # Dessiner le chemin en ROUGE
+        # Dessiner le chemin avec couleur intelligente
         if len(self.current_path) > 1:
+            path_color = self._get_path_color()
             path_coords = [(j, i) for (i, j) in self.current_path]
-            draw.line(path_coords, fill=(255, 0, 0), width=max(1, int(2/self.zoom_level)))
+            draw.line(path_coords, fill=path_color, width=max(1, int(2/self.zoom_level)))
         
         # Taille des marqueurs (adapte au zoom)
         marker_size = max(2, int(4 / self.zoom_level))
@@ -641,6 +680,7 @@ class Application:
         self.start_pixel = None
         self.end_pixel = None
         self.current_path = []
+        self.zoom_level = 1.0  # Reset zoom à 100%
         
         self.start_x_var.set("0")
         self.start_y_var.set("0")
