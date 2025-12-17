@@ -1,4 +1,8 @@
-from gui.app import main
+from gui import Application
+
+def main():
+    app = Application()
+    app.run()
 
 if __name__ == "__main__":
     main()

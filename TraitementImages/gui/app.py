@@ -8,7 +8,6 @@ from tkinter import filedialog, messagebox, ttk
 from PIL import Image, ImageTk, ImageDraw
 import sys
 import os
-import time
 
 # Import des modules core
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
