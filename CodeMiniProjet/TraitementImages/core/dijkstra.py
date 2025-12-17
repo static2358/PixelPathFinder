@@ -69,3 +69,21 @@ class Dijkstra:
             'nodes_visited': nodes_visited,
             'execution_time': execution_time
         }
+    
+
+    # Reconstruit le chemin entre le pixel de départ et le pixel d’arrivée 
+    def _reconstruct_path(self, predecessors, start, end):
+        
+        if end not in predecessors and end != start:
+            return []
+        
+        path = []
+        current = end
+
+        while current is not None:
+            path.append(current)
+            current = predecessors.get(current, None)
+
+        path.reverse()
+
+        return path
