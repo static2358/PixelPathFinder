@@ -11,6 +11,7 @@ class Graph:
 
     DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     
+
     # Conversion de l'image en matrice 2d
     def __init__(self, image_path):
         image = Image.open(image_path).convert('L')
@@ -26,6 +27,7 @@ class Graph:
                 row.append(pixel_value)
             self.pixels.append(row)
 
+
     # vérifie si un pixel est valide 
     def is_valid_pixel(self, i, j):
 
@@ -37,6 +39,29 @@ class Graph:
         
         return True
     
+
+    # Retourne la valeur du pixel (i, j) en grayscale
+    def get_pixel_value(self, i, j):
+
+        if not self.is_valid_pixel(i, j):
+            raise ValueError(f"Coordonnées invalides: ({i}, {j})")
+        
+        return self.pixels[i][j]
+    
+
+    # Retourne la liste des voisins d'un pixel (i, j)
+    def get_neighbors(self, i, j):
+
+        neighbors = []
+
+        for di, dj in self.DIRECTIONS:
+            ni = i + di
+            nj = j + dj
+
+            if self.is_valid_pixel(ni, nj):
+                neighbors.append((ni, nj))
+        
+        return neighbors
 
     
 
