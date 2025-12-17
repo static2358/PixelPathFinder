@@ -31,10 +31,10 @@ class Graph:
     # vérifie si un pixel est valide 
     def is_valid_pixel(self, i, j):
 
-        if i < 0 and i >= self.height:
+        if i < 0 or i >= self.height:
             return False
         
-        if j < 0 and j >= self.width:
+        if j < 0 or j >= self.width:
             return False
         
         return True

@@ -59,9 +59,9 @@ class Dijkstra:
                     predecessors[neighbor] = current_pixel
                     heapq.heappush(priority_queue, (new_distance, neighbor))
 
-                path = self._reconstruct_path(predecessors, start, end)
+        path = self._reconstruct_path(predecessors, start, end)
 
-                execution_time = time.time() - start_time
+        execution_time = time.time() - start_time
 
         return {
             'path': path,

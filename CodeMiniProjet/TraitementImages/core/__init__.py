@@ -1,2 +1,2 @@
-from .graph import ImageGraph
+from .graph import Graph
 from .dijkstra import Dijkstra
