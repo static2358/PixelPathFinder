@@ -83,12 +83,4 @@ class Graph:
 
     # Retourne le nombre de pixels de l'image (nombre de sommets du graphe)
     def get_total_vertices(self):
-        return self.height * self.width
-
-
-    
-
-
-
-    
-    
+        return self.height * self.width   
