@@ -1,24 +1,17 @@
-"""
-Interface Tkinter moderne pour Dijkstra Pathfinder
-Design épuré et professionnel
-"""
-
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
+
 from PIL import Image, ImageTk, ImageDraw
+
 import sys
 import os
 
-# Import des modules core
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core.graph import Graph
 from core.dijkstra import Dijkstra
 
 
 class Application:
-    """Interface Tkinter moderne style dark mode"""
-    
-    # Couleurs du thème
     COLORS = {
         'bg': '#0f0f0f',
         'surface': '#1a1a1a',
@@ -58,7 +51,6 @@ class Application:
         self.max_zoom = 5.0
         self.image_offset = (0, 0)
         
-        # Construire l'interface
         self._setup_styles()
         self._build_ui()
     
@@ -66,11 +58,9 @@ class Application:
         style = ttk.Style()
         style.theme_use('clam')
         
-        # Frame
         style.configure('Card.TFrame', background=self.COLORS['card'])
         style.configure('Surface.TFrame', background=self.COLORS['surface'])
         
-        # Labels
         style.configure('Title.TLabel',
             background=self.COLORS['surface'],
             foreground=self.COLORS['text'],
@@ -90,8 +80,7 @@ class Application:
             background=self.COLORS['card'],
             foreground=self.COLORS['text'],
             font=('Consolas', 14, 'bold'))
-        
-        # Boutons
+
         style.configure('Primary.TButton',
             background=self.COLORS['primary'],
             foreground=self.COLORS['text'],
@@ -101,14 +90,12 @@ class Application:
         style.map('Primary.TButton',
             background=[('active', self.COLORS['primary_hover'])])
         
-        # Entry
         style.configure('Coord.TEntry',
             fieldbackground=self.COLORS['bg'],
             foreground=self.COLORS['text'],
             insertcolor=self.COLORS['text'],
             font=('Consolas', 11))
         
-        # Scrollbars modernes
         style.configure('Modern.Vertical.TScrollbar',
             background=self.COLORS['card'],
             troughcolor=self.COLORS['surface'],
@@ -130,25 +117,20 @@ class Application:
     def _build_ui(self):
         """Construit l'interface utilisateur"""
         
-        # Container principal
         main_container = tk.Frame(self.root, bg=self.COLORS['bg'])
         main_container.pack(fill=tk.BOTH, expand=True)
-        
-        # ========== SIDEBAR GAUCHE ==========
+
         self.sidebar = tk.Frame(main_container, bg=self.COLORS['surface'], width=280)
         self.sidebar.pack(side=tk.LEFT, fill=tk.Y)
         self.sidebar.pack_propagate(False)
         
-        # Contenu sidebar compact
         sidebar_content = tk.Frame(self.sidebar, bg=self.COLORS['surface'])
         sidebar_content.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
         
-        # Bouton charger image
         self.btn_load = self._create_button(sidebar_content, "Charger Image",
             self._load_image, self.COLORS['card'])
         self.btn_load.pack(fill=tk.X, pady=(0, 10))
         
-        # === Card Départ ===
         start_card = self._create_card(sidebar_content, "Point de Depart")
         
         coord_frame1 = tk.Frame(start_card, bg=self.COLORS['card'])
@@ -228,7 +210,6 @@ class Application:
             font=('Consolas', 9), bg=self.COLORS['card'], fg=self.COLORS['text_dim'])
         self.end_label.pack(anchor='w', pady=(5, 0))
         
-        # === Boutons d'action ===
         actions_frame = tk.Frame(sidebar_content, bg=self.COLORS['surface'])
         actions_frame.pack(fill=tk.X, pady=10)
         
@@ -241,7 +222,6 @@ class Application:
             self._reset, self.COLORS['card'])
         self.btn_reset.pack(fill=tk.X)
         
-        # === Card Statistiques ===
         stats_card = self._create_card(sidebar_content, "Resultats")
         
         self.stats = {}
@@ -263,7 +243,6 @@ class Application:
             val.pack(side=tk.RIGHT)
             self.stats[name] = val
         
-        # Instructions (en bas)
         instructions = tk.Label(sidebar_content,
             text="Clic gauche = Depart | Clic droit = Arrivee\nCtrl+Molette = Zoom",
             font=('Segoe UI', 8),
@@ -271,11 +250,9 @@ class Application:
             justify=tk.LEFT)
         instructions.pack(anchor='w', pady=(10, 0))
         
-        # ========== ZONE IMAGE DROITE ==========
         self.image_frame = tk.Frame(main_container, bg=self.COLORS['bg'])
         self.image_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=20, pady=20)
         
-        # Canvas avec scroll invisible (molette uniquement)
         canvas_container = tk.Frame(self.image_frame, bg=self.COLORS['surface'])
         canvas_container.pack(fill=tk.BOTH, expand=True)
         
@@ -285,33 +262,28 @@ class Application:
             cursor="crosshair")
         self.canvas.pack(fill=tk.BOTH, expand=True)
         
-        # Scroll avec molette (sans barres visibles)
         def on_canvas_mousewheel(event):
-            if event.state & 0x4:  # Ctrl pressed = zoom
-                # Zoom in/out
+            if event.state & 0x4:
                 if event.delta > 0:
                     self._zoom_in(event)
                 else:
                     self._zoom_out(event)
-            elif event.state & 0x1:  # Shift pressed = horizontal scroll
+            elif event.state & 0x1: 
                 self.canvas.xview_scroll(int(-1*(event.delta/120)), "units")
-            else:  # Vertical scroll
+            else: 
                 self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
         self.canvas.bind("<MouseWheel>", on_canvas_mousewheel)
         
-        # Bindings
         self.canvas.bind("<Button-1>", self._on_left_click)
         self.canvas.bind("<Button-3>", self._on_right_click)
         self.canvas.bind("<Motion>", self._on_mouse_move)
         self.canvas.bind("<Configure>", self._on_canvas_resize)
         
-        # Label coordonnées curseur
         self.cursor_label = tk.Label(self.image_frame,
             text="", font=('Consolas', 9),
             bg=self.COLORS['bg'], fg=self.COLORS['text_dim'])
         self.cursor_label.pack(pady=(10, 0))
         
-        # Message initial
         self._show_placeholder()
     
     def _create_card(self, parent, title):
@@ -321,11 +293,9 @@ class Application:
             highlightthickness=1)
         card.pack(fill=tk.X, pady=(0, 8))
         
-        # Padding interne réduit
         inner = tk.Frame(card, bg=self.COLORS['card'])
         inner.pack(fill=tk.X, padx=10, pady=8)
         
-        # Titre
         tk.Label(inner, text=title, font=('Segoe UI', 10, 'bold'),
             bg=self.COLORS['card'], fg=self.COLORS['text']).pack(anchor='w')
         
@@ -341,7 +311,6 @@ class Application:
             relief=tk.FLAT, cursor='hand2',
             padx=10, pady=6 if small else 8)
         
-        # Hover effect
         def on_enter(e):
             btn.config(bg=self._lighten_color(color))
         def on_leave(e):
@@ -367,18 +336,16 @@ class Application:
             import ctypes
             self.root.update()
             hwnd = ctypes.windll.user32.GetParent(self.root.winfo_id())
-            # DWMWA_USE_IMMERSIVE_DARK_MODE = 20
             ctypes.windll.dwmapi.DwmSetWindowAttribute(
                 hwnd, 20, ctypes.byref(ctypes.c_int(1)), ctypes.sizeof(ctypes.c_int))
         except:
-            pass  # Ignorer si non supporté
+            pass 
     
     def _get_path_color(self):
         """Détermine la couleur du chemin selon le fond"""
         if not self.current_path or not self.original_image:
-            return (255, 0, 0)  # Rouge par défaut
+            return (255, 0, 0)  
         
-        # Échantillonner quelques pixels du chemin
         sample_size = min(50, len(self.current_path))
         step = max(1, len(self.current_path) // sample_size)
         
@@ -388,16 +355,14 @@ class Application:
             try:
                 pixel = self.original_image.getpixel((j, i))
                 r, g, b = pixel[:3]
-                # Détecter si le pixel est rougeâtre (R dominant)
                 if r > 150 and r > g * 1.5 and r > b * 1.5:
                     red_count += 1
             except:
                 pass
         
-        # Si plus de 30% du chemin est rouge, utiliser cyan
         if red_count > sample_size * 0.3:
-            return (0, 255, 255)  # Cyan
-        return (255, 0, 0)  # Rouge
+            return (0, 255, 255) 
+        return (255, 0, 0) 
     
     def _show_placeholder(self):
         """Affiche le placeholder sur le canvas"""
@@ -425,18 +390,15 @@ class Application:
             self.original_image = Image.open(file_path).convert('RGB')
             self.image_graph = Graph(file_path)
             
-            # Reset
             self.start_pixel = None
             self.end_pixel = None
             self.current_path = []
             self.zoom_level = 1.0
             
-            # Update stats
             h, w = self.image_graph.get_dimensions()
             self.stats['dims'].config(text=f"{w} × {h}")
             self._reset_stats()
             
-            # Afficher
             self._update_display()
             self._update_buttons_state()
             
@@ -468,19 +430,15 @@ class Application:
     def _zoom_at_point(self, event, old_zoom):
         """Zoom centré sur le point de la souris"""
         if event:
-            # Position actuelle du scroll
             x = self.canvas.canvasx(event.x)
             y = self.canvas.canvasy(event.y)
             
-            # Calculer la nouvelle position après zoom
             scale_change = self.zoom_level / old_zoom
             new_x = x * scale_change
             new_y = y * scale_change
-            
-            # Mettre à jour l'affichage
+
             self._update_display()
             
-            # Ajuster le scroll pour garder le point sous la souris
             self.canvas.xview_moveto((new_x - event.x) / (self.original_image.width * self.zoom_level))
             self.canvas.yview_moveto((new_y - event.y) / (self.original_image.height * self.zoom_level))
         else:
@@ -501,7 +459,7 @@ class Application:
         
         scale_w = canvas_w / img_w
         scale_h = canvas_h / img_h
-        self.scale_factor = min(scale_w, scale_h, 4.0)  # Max 4x zoom
+        self.scale_factor = min(scale_w, scale_h, 4.0)  
     
     def _update_display(self):
         """Met à jour l'affichage de l'image avec zoom"""
@@ -509,32 +467,26 @@ class Application:
             self._show_placeholder()
             return
         
-        # Créer une copie pour dessiner
         img = self.original_image.copy()
         draw = ImageDraw.Draw(img)
         
-        # Dessiner le chemin avec couleur intelligente
         if len(self.current_path) > 1:
             path_color = self._get_path_color()
             path_coords = [(j, i) for (i, j) in self.current_path]
             draw.line(path_coords, fill=path_color, width=max(1, int(2/self.zoom_level)))
         
-        # Taille des marqueurs (adapte au zoom)
         marker_size = max(2, int(4 / self.zoom_level))
         
-        # Marqueur départ (vert)
         if self.start_pixel:
             i, j = self.start_pixel
             draw.ellipse([j - marker_size, i - marker_size, j + marker_size, i + marker_size],
                 fill=(34, 197, 94), outline=(255, 255, 255))
         
-        # Marqueur arrivée (rouge)
         if self.end_pixel:
             i, j = self.end_pixel
             draw.ellipse([j - marker_size, i - marker_size, j + marker_size, i + marker_size],
                 fill=(239, 68, 68), outline=(255, 255, 255))
         
-        # Appliquer le zoom
         new_width = int(img.width * self.zoom_level)
         new_height = int(img.height * self.zoom_level)
         
@@ -542,11 +494,9 @@ class Application:
             img_resized = img.resize((new_width, new_height), Image.NEAREST if self.zoom_level > 1 else Image.LANCZOS)
         else:
             img_resized = img
-        
-        # Convertir pour Tkinter
+
         self.photo_image = ImageTk.PhotoImage(img_resized)
         
-        # Configurer le scrollregion
         self.canvas.configure(scrollregion=(0, 0, new_width, new_height))
         
         self.image_offset = (0, 0)
@@ -555,19 +505,15 @@ class Application:
         self.canvas.create_image(0, 0, image=self.photo_image, anchor=tk.NW)
     
     def _on_canvas_resize(self, event):
-        """Gère le redimensionnement du canvas"""
         self._update_display()
     
     def _canvas_to_pixel(self, x, y):
-        """Convertit les coordonnées canvas en pixel image (avec scroll et zoom)"""
         if not self.image_graph:
             return None
         
-        # Prendre en compte le scroll
         canvas_x = self.canvas.canvasx(x)
         canvas_y = self.canvas.canvasy(y)
         
-        # Prendre en compte le zoom
         j, i = int(canvas_x / self.zoom_level), int(canvas_y / self.zoom_level)
         
         if self.image_graph.is_valid_pixel(i, j):
@@ -575,11 +521,10 @@ class Application:
         return None
     
     def _on_left_click(self, event):
-        """Clic gauche = définir départ"""
         pixel = self._canvas_to_pixel(event.x, event.y)
         if pixel:
             self.start_pixel = pixel
-            self.current_path = []  # Effacer le chemin
+            self.current_path = []  
             self.start_x_var.set(str(pixel[1]))
             self.start_y_var.set(str(pixel[0]))
             self.start_label.config(text=f"({pixel[1]}, {pixel[0]})")
@@ -587,11 +532,10 @@ class Application:
             self._update_buttons_state()
     
     def _on_right_click(self, event):
-        """Clic droit = définir arrivée"""
         pixel = self._canvas_to_pixel(event.x, event.y)
         if pixel:
             self.end_pixel = pixel
-            self.current_path = []  # Effacer le chemin
+            self.current_path = [] 
             self.end_x_var.set(str(pixel[1]))
             self.end_y_var.set(str(pixel[0]))
             self.end_label.config(text=f"({pixel[1]}, {pixel[0]})")
@@ -599,7 +543,6 @@ class Application:
             self._update_buttons_state()
     
     def _on_mouse_move(self, event):
-        """Affiche les coordonnées sous le curseur"""
         pixel = self._canvas_to_pixel(event.x, event.y)
         if pixel:
             i, j = pixel
@@ -614,14 +557,13 @@ class Application:
                 self.cursor_label.config(text="")
     
     def _set_start_from_entry(self):
-        """Définit le départ depuis les champs"""
         try:
             x = int(self.start_x_var.get())
             y = int(self.start_y_var.get())
             
             if self.image_graph and self.image_graph.is_valid_pixel(y, x):
                 self.start_pixel = (y, x)
-                self.current_path = []  # Effacer le chemin
+                self.current_path = [] 
                 self.start_label.config(text=f"({x}, {y})")
                 self._update_display()
                 self._update_buttons_state()
@@ -631,14 +573,13 @@ class Application:
             messagebox.showwarning("Attention", "Entrez des nombres valides")
     
     def _set_end_from_entry(self):
-        """Définit l'arrivée depuis les champs"""
         try:
             x = int(self.end_x_var.get())
             y = int(self.end_y_var.get())
             
             if self.image_graph and self.image_graph.is_valid_pixel(y, x):
                 self.end_pixel = (y, x)
-                self.current_path = []  # Effacer le chemin
+                self.current_path = []  
                 self.end_label.config(text=f"({x}, {y})")
                 self._update_display()
                 self._update_buttons_state()
@@ -663,13 +604,11 @@ class Application:
             
             self.current_path = result['path']
             
-            # Mettre à jour les stats
             self.stats['distance'].config(text=f"{result['distance']:.0f}")
             self.stats['time'].config(text=f"{result['execution_time']*1000:.1f} ms")
             self.stats['nodes'].config(text=f"{result['nodes_visited']:,}")
             self.stats['path'].config(text=f"{len(self.current_path)} px")
             
-            # Afficher le résultat
             self._update_display()
             
         except Exception as e:
@@ -680,7 +619,7 @@ class Application:
         self.start_pixel = None
         self.end_pixel = None
         self.current_path = []
-        self.zoom_level = 1.0  # Reset zoom à 100%
+        self.zoom_level = 1.0  
         
         self.start_x_var.set("0")
         self.start_y_var.set("0")
@@ -695,19 +634,8 @@ class Application:
         self._update_buttons_state()
     
     def _reset_stats(self):
-        """Réinitialise les statistiques"""
         for key in ['distance', 'time', 'nodes', 'path']:
             self.stats[key].config(text="--")
     
     def run(self):
-        """Lance l'application"""
         self.root.mainloop()
-
-
-def main():
-    app = Application()
-    app.run()
-
-
-if __name__ == "__main__":
-    main()
