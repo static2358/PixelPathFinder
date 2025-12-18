@@ -9,6 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core.graph import Graph
 from core.dijkstra import Dijkstra
+from core.astar import AStar
 
 
 class Application:
@@ -50,6 +51,8 @@ class Application:
         self.min_zoom = 0.1
         self.max_zoom = 5.0
         self.image_offset = (0, 0)
+        
+        self.algorithm = tk.StringVar(value="dijkstra")
         
         self._setup_styles()
         self._build_ui()
@@ -130,6 +133,25 @@ class Application:
         self.btn_load = self._create_button(sidebar_content, "Charger Image",
             self._load_image, self.COLORS['card'])
         self.btn_load.pack(fill=tk.X, pady=(0, 10))
+        
+        algo_card = self._create_card(sidebar_content, "Algorithme")
+        
+        algo_frame = tk.Frame(algo_card, bg=self.COLORS['card'])
+        algo_frame.pack(fill=tk.X, pady=(5, 0))
+        
+        rb_dijkstra = tk.Radiobutton(algo_frame, text="Dijkstra",
+            variable=self.algorithm, value="dijkstra",
+            font=('Segoe UI', 10), bg=self.COLORS['card'], fg=self.COLORS['text'],
+            selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
+            activeforeground=self.COLORS['text'])
+        rb_dijkstra.pack(anchor='w')
+        
+        rb_astar = tk.Radiobutton(algo_frame, text="A*",
+            variable=self.algorithm, value="astar",
+            font=('Segoe UI', 10), bg=self.COLORS['card'], fg=self.COLORS['text'],
+            selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
+            activeforeground=self.COLORS['text'])
+        rb_astar.pack(anchor='w')
         
         start_card = self._create_card(sidebar_content, "Point de Depart")
         
@@ -226,10 +248,11 @@ class Application:
         
         self.stats = {}
         for name, label, color in [
+            ('algo', 'Algorithme', self.COLORS['primary']),
             ('dims', 'Dimensions', self.COLORS['text_muted']),
             ('distance', 'Distance', self.COLORS['text_muted']),
             ('time', 'Temps', self.COLORS['text_muted']),
-            ('nodes', 'Nœuds', self.COLORS['text_muted']),
+            ('nodes', 'Noeuds', self.COLORS['text_muted']),
             ('path', 'Chemin', self.COLORS['text_muted'])
         ]:
             row = tk.Frame(stats_card, bg=self.COLORS['card'])
@@ -599,11 +622,16 @@ class Application:
             return
         
         try:
-            dijkstra = Dijkstra(self.image_graph)
-            result = dijkstra.find_shortest_path(self.start_pixel, self.end_pixel)
+            if self.algorithm.get() == "astar":
+                algo = AStar(self.image_graph)
+            else:
+                algo = Dijkstra(self.image_graph)
+            
+            result = algo.find_shortest_path(self.start_pixel, self.end_pixel)
             
             self.current_path = result['path']
             
+            self.stats['algo'].config(text=result.get('algorithm', 'Dijkstra'))
             self.stats['distance'].config(text=f"{result['distance']:.0f}")
             self.stats['time'].config(text=f"{result['execution_time']*1000:.1f} ms")
             self.stats['nodes'].config(text=f"{result['nodes_visited']:,}")
@@ -634,7 +662,7 @@ class Application:
         self._update_buttons_state()
     
     def _reset_stats(self):
-        for key in ['distance', 'time', 'nodes', 'path']:
+        for key in ['algo', 'distance', 'time', 'nodes', 'path']:
             self.stats[key].config(text="--")
     
     def run(self):

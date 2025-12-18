@@ -14,12 +14,12 @@ class AStar:
         self.graph = graph
     
 
-    # Heuristique Manhattan, estimation du coût jusqu'à l'arrivée
-    # Admissible car ne surestime jamais le coût réel
+    # Heuristique Chebyshev (distance du roi aux echecs)
+    # Plus petite que Manhattan, meilleur compromis vitesse/precision
     def _heuristic(self, pixel, goal):
         i1, j1 = pixel
         i2, j2 = goal
-        return abs(i1 - i2) + abs(j1 - j2)
+        return max(abs(i1 - i2), abs(j1 - j2))
     
 
     # Retourne le plus court chemin entre deux pixels
@@ -94,7 +94,6 @@ class AStar:
         }
     
     def _reconstruct_path(self, predecessors, start, end):
-        # Reconstruit le chemin à partir des prédécesseurs
         
         if end not in predecessors and end != start:
             return []
