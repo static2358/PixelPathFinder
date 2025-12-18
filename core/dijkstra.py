@@ -67,6 +67,7 @@ class Dijkstra:
             'path': path,
             'distance': distances.get(end, float('inf')),
             'nodes_visited': nodes_visited,
+            'visited_set': visited,
             'execution_time': execution_time,
             'algorithm': 'Dijkstra'
         }

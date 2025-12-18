@@ -14,7 +14,7 @@ class AStar:
         self.graph = graph
     
 
-    # Heuristique Chebyshev (distance du roi aux echecs)
+    # Heuristique Chebyshev
     # Plus petite que Manhattan, meilleur compromis vitesse/precision
     def _heuristic(self, pixel, goal):
         i1, j1 = pixel
@@ -89,6 +89,7 @@ class AStar:
             'path': path,
             'distance': g_score.get(end, float('inf')),
             'nodes_visited': len(visited),
+            'visited_set': visited,
             'execution_time': execution_time,
             'algorithm': 'A*'
         }

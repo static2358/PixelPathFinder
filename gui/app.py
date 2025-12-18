@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
 from PIL import Image, ImageTk, ImageDraw
+import matplotlib.pyplot as plt
+import numpy as np
 
 import sys
 import os
@@ -45,6 +47,7 @@ class Application:
         self.start_pixel = None
         self.end_pixel = None
         self.current_path = []
+        self.last_result = None
         
         self.scale_factor = 1.0
         self.zoom_level = 1.0
@@ -242,29 +245,12 @@ class Application:
         
         self.btn_reset = self._create_button(actions_frame, "Reinitialiser",
             self._reset, self.COLORS['card'])
-        self.btn_reset.pack(fill=tk.X)
+        self.btn_reset.pack(fill=tk.X, pady=(0, 5))
         
-        stats_card = self._create_card(sidebar_content, "Resultats")
-        
-        self.stats = {}
-        for name, label, color in [
-            ('algo', 'Algorithme', self.COLORS['primary']),
-            ('dims', 'Dimensions', self.COLORS['text_muted']),
-            ('distance', 'Distance', self.COLORS['text_muted']),
-            ('time', 'Temps', self.COLORS['text_muted']),
-            ('nodes', 'Noeuds', self.COLORS['text_muted']),
-            ('path', 'Chemin', self.COLORS['text_muted'])
-        ]:
-            row = tk.Frame(stats_card, bg=self.COLORS['card'])
-            row.pack(fill=tk.X, pady=3)
-            
-            tk.Label(row, text=label, font=('Segoe UI', 10),
-                bg=self.COLORS['card'], fg=self.COLORS['text_muted']).pack(side=tk.LEFT)
-            
-            val = tk.Label(row, text="--", font=('Consolas', 12, 'bold'),
-                bg=self.COLORS['card'], fg=color)
-            val.pack(side=tk.RIGHT)
-            self.stats[name] = val
+        self.btn_visualize = self._create_button(actions_frame, "Visualiser",
+            self._show_matplotlib, self.COLORS['warning'])
+        self.btn_visualize.pack(fill=tk.X)
+        self.btn_visualize.config(state=tk.DISABLED)
         
         instructions = tk.Label(sidebar_content,
             text="Clic gauche = Depart | Clic droit = Arrivee\nCtrl+Molette = Zoom",
@@ -310,10 +296,10 @@ class Application:
         self._show_placeholder()
     
     def _create_card(self, parent, title):
-        """Crée une carte avec titre"""
+        """Crée une carte avec titre - flat design"""
         card = tk.Frame(parent, bg=self.COLORS['card'],
             highlightbackground=self.COLORS['border'],
-            highlightthickness=1)
+            highlightthickness=0)
         card.pack(fill=tk.X, pady=(0, 8))
         
         inner = tk.Frame(card, bg=self.COLORS['card'])
@@ -325,19 +311,24 @@ class Application:
         return inner
     
     def _create_button(self, parent, text, command, color, small=False):
-        """Crée un bouton stylisé"""
+        """Crée un bouton stylisé flat design"""
         btn = tk.Button(parent, text=text, command=command,
             font=('Segoe UI', 9 if small else 10, 'bold'),
             bg=color, fg='#ffffff',
             activebackground=color, activeforeground='#ffffff',
             disabledforeground='#ffffff',
             relief=tk.FLAT, cursor='hand2',
+            bd=0, highlightthickness=0,
             padx=10, pady=6 if small else 8)
         
+        original_color = color
+        
         def on_enter(e):
-            btn.config(bg=self._lighten_color(color))
+            if btn['state'] != tk.DISABLED:
+                btn.config(bg=self._lighten_color(original_color))
         def on_leave(e):
-            btn.config(bg=color)
+            if btn['state'] != tk.DISABLED:
+                btn.config(bg=original_color)
         
         btn.bind("<Enter>", on_enter)
         btn.bind("<Leave>", on_leave)
@@ -416,11 +407,10 @@ class Application:
             self.start_pixel = None
             self.end_pixel = None
             self.current_path = []
+            self.last_result = None
             self.zoom_level = 1.0
             
-            h, w = self.image_graph.get_dimensions()
-            self.stats['dims'].config(text=f"{w} × {h}")
-            self._reset_stats()
+            self.btn_visualize.config(state=tk.DISABLED)
             
             self._update_display()
             self._update_buttons_state()
@@ -630,12 +620,9 @@ class Application:
             result = algo.find_shortest_path(self.start_pixel, self.end_pixel)
             
             self.current_path = result['path']
+            self.last_result = result
             
-            self.stats['algo'].config(text=result.get('algorithm', 'Dijkstra'))
-            self.stats['distance'].config(text=f"{result['distance']:.0f}")
-            self.stats['time'].config(text=f"{result['execution_time']*1000:.1f} ms")
-            self.stats['nodes'].config(text=f"{result['nodes_visited']:,}")
-            self.stats['path'].config(text=f"{len(self.current_path)} px")
+            self.btn_visualize.config(state=tk.NORMAL)
             
             self._update_display()
             
@@ -647,6 +634,7 @@ class Application:
         self.start_pixel = None
         self.end_pixel = None
         self.current_path = []
+        self.last_result = None
         self.zoom_level = 1.0  
         
         self.start_x_var.set("0")
@@ -657,13 +645,150 @@ class Application:
         self.start_label.config(text="Non défini")
         self.end_label.config(text="Non défini")
         
-        self._reset_stats()
+        self.btn_visualize.config(state=tk.DISABLED)
+        
         self._update_display()
         self._update_buttons_state()
     
-    def _reset_stats(self):
-        for key in ['algo', 'distance', 'time', 'nodes', 'path']:
-            self.stats[key].config(text="--")
+    def _show_matplotlib(self):
+        """Affiche la visualisation matplotlib simplifiée"""
+        if not self.last_result or not self.original_image:
+            return
+        
+        # Style sombre
+        plt.rcParams.update({
+            'font.family': 'serif',
+            'font.size': 10,
+            'figure.facecolor': '#0a0a0a',
+            'axes.facecolor': '#0a0a0a',
+            'text.color': '#e0e0e0',
+            'axes.labelcolor': '#e0e0e0',
+            'axes.edgecolor': '#404040',
+        })
+        
+        h, w = self.image_graph.get_dimensions()
+        img_array = np.array(self.original_image)
+        visited_set = self.last_result.get('visited_set', set())
+        algo_name = self.last_result['algorithm']
+        
+        # Figure 2x2
+        fig = plt.figure(figsize=(14, 10), dpi=100)
+        fig.patch.set_facecolor('#0a0a0a')
+        
+        gs = fig.add_gridspec(2, 2, hspace=0.3, wspace=0.2,
+            left=0.05, right=0.95, top=0.95, bottom=0.05)
+        
+        # (a) Image originale avec chemin
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax1.imshow(img_array)
+        
+        if self.current_path:
+            path_y = np.array([p[0] for p in self.current_path])
+            path_x = np.array([p[1] for p in self.current_path])
+            ax1.plot(path_x, path_y, color='#ff4444', linewidth=2, 
+                label=f'Chemin ({len(self.current_path)}px)')
+        
+        if self.start_pixel:
+            ax1.scatter(self.start_pixel[1], self.start_pixel[0], 
+                c='#00ff88', s=100, marker='.', edgecolors='white', linewidths=2,
+                label='Source', zorder=5)
+        if self.end_pixel:
+            ax1.scatter(self.end_pixel[1], self.end_pixel[0], 
+                c='#ff6b6b', s=100, marker='.', edgecolors='white', linewidths=2,
+                label='Destination', zorder=5)
+        
+        ax1.legend(loc='upper left', fontsize=8, fancybox=False, 
+            framealpha=0.0, facecolor='none', edgecolor='none',
+            labelcolor='#ffffff', bbox_to_anchor=(0, -0.02), ncol=3)
+        ax1.axis('off')
+        ax1.set_title("Image originale avec chemin optimal", fontsize=12, 
+            fontweight='bold', color='#e0e0e0', pad=10)
+        
+        # (b) Image en niveaux de gris
+        ax2 = fig.add_subplot(gs[0, 1])
+        gray_img = np.mean(img_array, axis=2)
+        ax2.imshow(gray_img, cmap='gray')
+        
+        if self.current_path:
+            ax2.plot(path_x, path_y, color='#ff4444', linewidth=2)
+        
+        ax2.axis('off')
+        ax2.set_title("Image en niveaux de gris", fontsize=12, 
+            fontweight='bold', color='#e0e0e0', pad=10)
+        
+        # (c) Zone d'exploration
+        ax3 = fig.add_subplot(gs[1, 0])
+        
+        exploration_map = np.zeros((h, w), dtype=np.float32)
+        for (i, j) in visited_set:
+            exploration_map[i, j] = 1.0
+        
+        ax3.imshow(img_array, alpha=0.4)
+        ax3.imshow(exploration_map, cmap='YlOrRd', alpha=0.6, interpolation='nearest')
+        
+        if self.current_path:
+            ax3.plot(path_x, path_y, color='#00ffff', linewidth=2)
+        
+        exploration_pct = 100 * len(visited_set) / (w * h)
+        ax3.axis('off')
+        ax3.set_title(f"Zone d'exploration ({exploration_pct:.1f}%)", fontsize=12, 
+            fontweight='bold', color='#e0e0e0', pad=10)
+        
+        # (d) Statistiques
+        ax4 = fig.add_subplot(gs[1, 1])
+        ax4.axis('off')
+        
+        # Cadre
+        from matplotlib.patches import FancyBboxPatch
+        bbox = FancyBboxPatch((0.05, 0.05), 0.9, 0.9, 
+            boxstyle="round,pad=0.02,rounding_size=0.02",
+            facecolor='#151515', edgecolor='#404040', linewidth=2,
+            transform=ax4.transAxes, zorder=0)
+        ax4.add_patch(bbox)
+        
+        # Métriques
+        exec_time = self.last_result['execution_time'] * 1000
+        path_len = len(self.current_path)
+        distance = self.last_result['distance']
+        nodes = self.last_result['nodes_visited']
+        
+        stats_lines = [
+            ("ALGORITHME", algo_name, True),
+            ("", "", False),
+            ("Dimensions", f"{w} × {h} px", False),
+            ("Total pixels", f"{w*h:,}", False),
+            ("", "", False),
+            ("Longueur chemin", f"{path_len} px", False),
+            ("Distance pondérée", f"{distance:,.1f}", False),
+            ("", "", False),
+            ("Nœuds explorés", f"{nodes:,}", False),
+            ("Couverture", f"{exploration_pct:.2f}%", False),
+            ("", "", False),
+            ("Temps", f"{exec_time:.2f} ms", False),
+        ]
+        
+        y = 0.88
+        for label, value, is_title in stats_lines:
+            if label == "":
+                y -= 0.03
+                continue
+            if is_title:
+                ax4.text(0.5, y, f"{label}: {value}", transform=ax4.transAxes,
+                    fontsize=14, fontweight='bold', color='#6366f1',
+                    ha='center', fontfamily='sans-serif')
+                y -= 0.08
+            else:
+                ax4.text(0.15, y, label, transform=ax4.transAxes,
+                    fontsize=10, color='#a0a0a0', fontfamily='sans-serif')
+                ax4.text(0.85, y, value, transform=ax4.transAxes,
+                    fontsize=10, color='#ffffff', fontfamily='monospace', ha='right')
+                y -= 0.055
+        
+        ax4.set_xlabel("(d) Statistiques", fontsize=11, 
+            fontweight='bold', color='#e0e0e0', labelpad=10)
+        ax4.xaxis.set_label_position('bottom')
+        
+        plt.show()
     
     def run(self):
         self.root.mainloop()
