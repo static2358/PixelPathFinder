@@ -27,6 +27,7 @@ class Dijkstra:
         distances[start] = 0
         predecessors = {}
         visited = set()
+        visited_steps = []
         priority_queue = [(0, start)]
         nodes_visited = 0
 
@@ -37,6 +38,7 @@ class Dijkstra:
                 continue
 
             visited.add(current_pixel)
+            visited_steps.append(current_pixel)
             nodes_visited += 1
 
             if current_pixel == end:
@@ -68,6 +70,7 @@ class Dijkstra:
             'distance': distances.get(end, float('inf')),
             'nodes_visited': nodes_visited,
             'visited_set': visited,
+            'visited_steps': visited_steps,
             'execution_time': execution_time,
             'algorithm': 'Dijkstra'
         }

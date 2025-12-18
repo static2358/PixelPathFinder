@@ -56,6 +56,8 @@ class Application:
         self.image_offset = (0, 0)
         
         self.algorithm = tk.StringVar(value="dijkstra")
+        self.animation_enabled = tk.BooleanVar(value=False)
+        self.is_animating = False
         
         self._setup_styles()
         self._build_ui()
@@ -155,6 +157,20 @@ class Application:
             selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
             activeforeground=self.COLORS['text'])
         rb_astar.pack(anchor='w')
+        
+        # Animation toggle
+        anim_frame = tk.Frame(algo_card, bg=self.COLORS['card'])
+        anim_frame.pack(fill=tk.X, pady=(10, 0))
+        
+        self.anim_checkbox = tk.Checkbutton(anim_frame, text="Animation",
+            variable=self.animation_enabled,
+            font=('Segoe UI', 10), bg=self.COLORS['card'], fg=self.COLORS['text'],
+            selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
+            activeforeground=self.COLORS['text'])
+        self.anim_checkbox.pack(anchor='w')
+        
+        tk.Label(anim_frame, text="(Recommandé pour petites images)",
+            font=('Segoe UI', 8), bg=self.COLORS['card'], fg=self.COLORS['text_dim']).pack(anchor='w')
         
         start_card = self._create_card(sidebar_content, "Point de Depart")
         
@@ -608,26 +624,145 @@ class Application:
         if not self.start_pixel or not self.end_pixel:
             return
         
+        if self.is_animating:
+            return
+        
         try:
             if self.algorithm.get() == "astar":
                 algo = AStar(self.image_graph)
             else:
                 algo = Dijkstra(self.image_graph)
             
-            result = algo.find_shortest_path(self.start_pixel, self.end_pixel)
-            
-            self.current_path = result['path']
-            self.last_result = result
-            
-            self.btn_visualize.config(state=tk.NORMAL)
-            
-            self._update_display()
+            if self.animation_enabled.get():
+                self._compute_path_animated(algo)
+            else:
+                result = algo.find_shortest_path(self.start_pixel, self.end_pixel)
+                
+                self.current_path = result['path']
+                self.last_result = result
+                
+                self.btn_visualize.config(state=tk.NORMAL)
+                
+                self._update_display()
             
         except Exception as e:
             messagebox.showerror("Erreur", f"Erreur lors du calcul:\n{e}")
     
+    def _compute_path_animated(self, algo):
+        """Calcule le chemin avec animation en temps réel"""
+        import time
+        
+        self.is_animating = True
+        self.btn_compute.config(state=tk.DISABLED)
+        self.btn_reset.config(state=tk.DISABLED)
+        self.anim_checkbox.config(state=tk.DISABLED)
+        
+        # Lancer le calcul et récupérer les étapes
+        result = algo.find_shortest_path(self.start_pixel, self.end_pixel)
+        
+        visited_steps = result.get('visited_steps', [])
+        total_steps = len(visited_steps)
+        execution_time = result['execution_time']
+        
+        if total_steps == 0:
+            self._finish_animation(result)
+            return
+        
+        # Calculer le délai entre chaque frame pour matcher le temps d'exécution
+        # On groupe les nœuds pour ne pas avoir trop de frames
+        max_frames = min(500, total_steps)  # Maximum 500 frames
+        nodes_per_frame = max(1, total_steps // max_frames)
+        
+        # Temps par frame pour que l'animation dure ~= execution_time (minimum 1ms)
+        time_per_frame = max(1, int((execution_time * 1000) / max_frames))
+        
+        self.animation_visited = set()
+        self.animation_steps = visited_steps
+        self.animation_result = result
+        self.animation_index = 0
+        self.nodes_per_frame = nodes_per_frame
+        self.animation_delay = time_per_frame
+        
+        self._animate_step()
+    
+    def _animate_step(self):
+        """Exécute une étape de l'animation"""
+        if not self.is_animating:
+            return
+        
+        # Ajouter les nœuds pour cette frame
+        end_index = min(self.animation_index + self.nodes_per_frame, len(self.animation_steps))
+        
+        for i in range(self.animation_index, end_index):
+            self.animation_visited.add(self.animation_steps[i])
+        
+        self.animation_index = end_index
+        
+        # Mettre à jour l'affichage
+        self._update_display_animated()
+        
+        # Continuer ou terminer
+        if self.animation_index < len(self.animation_steps):
+            self.root.after(self.animation_delay, self._animate_step)
+        else:
+            self._finish_animation(self.animation_result)
+    
+    def _update_display_animated(self):
+        """Met à jour l'affichage pendant l'animation"""
+        if not self.original_image:
+            return
+        
+        img = self.original_image.copy()
+        draw = ImageDraw.Draw(img)
+        
+        # Dessiner les nœuds visités en jaune/orange
+        for (i, j) in self.animation_visited:
+            draw.point((j, i), fill=(255, 165, 0))  # Orange
+        
+        # Marqueurs start/end
+        if self.start_pixel:
+            i, j = self.start_pixel
+            draw.point((j, i), fill=(34, 197, 94))
+        
+        if self.end_pixel:
+            i, j = self.end_pixel
+            draw.point((j, i), fill=(239, 68, 68))
+        
+        # Redimensionner
+        new_width = int(img.width * self.zoom_level)
+        new_height = int(img.height * self.zoom_level)
+        
+        if new_width > 0 and new_height > 0:
+            img_resized = img.resize((new_width, new_height), Image.NEAREST if self.zoom_level > 1 else Image.LANCZOS)
+        else:
+            img_resized = img
+        
+        self.photo_image = ImageTk.PhotoImage(img_resized)
+        
+        self.canvas.delete("all")
+        self.canvas.create_image(0, 0, image=self.photo_image, anchor=tk.NW)
+        
+        # Afficher la progression
+        progress = int(100 * self.animation_index / len(self.animation_steps))
+        self.cursor_label.config(text=f"Animation: {progress}% - Nœuds explorés: {len(self.animation_visited)}")
+    
+    def _finish_animation(self, result):
+        """Termine l'animation et affiche le résultat final"""
+        self.is_animating = False
+        self.current_path = result['path']
+        self.last_result = result
+        
+        self.btn_compute.config(state=tk.NORMAL)
+        self.btn_reset.config(state=tk.NORMAL)
+        self.btn_visualize.config(state=tk.NORMAL)
+        self.anim_checkbox.config(state=tk.NORMAL)
+        
+        self._update_display()
+        self.cursor_label.config(text="Animation terminée")
+    
     def _reset(self):
         """Réinitialise tout"""
+        self.is_animating = False  # Stop any ongoing animation
         self.start_pixel = None
         self.end_pixel = None
         self.current_path = []

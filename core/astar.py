@@ -32,36 +32,25 @@ class AStar:
         if not self.graph.is_valid_pixel(end[0], end[1]):
             raise ValueError(f"Pixel d'arrivée invalide: {end}")
         
-        # g_score = coût réel depuis le départ
         g_score = {start: 0}
-        
-        # f_score = g_score + heuristique
         f_score = {start: self._heuristic(start, end)}
-        
-        # Predecesseurs pour reconstruire le chemin
         predecessors = {}
-        
-        # Ensemble des nœuds visités
         visited = set()
-        
-        # File de priorité : (f_score, g_score, pixel)
-        # On ajoute g_score pour départager les égalités
+        visited_steps = []
         priority_queue = [(f_score[start], 0, start)]
         
         while priority_queue:
             current_f, current_g, current_pixel = heapq.heappop(priority_queue)
             
-            # Ignorer si déjà visité
             if current_pixel in visited:
                 continue
             
             visited.add(current_pixel)
+            visited_steps.append(current_pixel)
             
-            # Arrivée trouvée
             if current_pixel == end:
                 break
             
-            # Explorer les voisins
             i, j = current_pixel
             neighbors = self.graph.get_neighbors(i, j)
             
@@ -69,18 +58,15 @@ class AStar:
                 if neighbor in visited:
                     continue
                 
-                # Calculer le nouveau g_score
                 edge_weight = self.graph.get_edge_weight(current_pixel, neighbor)
                 tentative_g = g_score[current_pixel] + edge_weight
                 
-                # Mettre à jour si meilleur chemin trouvé
                 if tentative_g < g_score.get(neighbor, float('inf')):
                     predecessors[neighbor] = current_pixel
                     g_score[neighbor] = tentative_g
                     f_score[neighbor] = tentative_g + self._heuristic(neighbor, end)
                     heapq.heappush(priority_queue, (f_score[neighbor], tentative_g, neighbor))
         
-        # Reconstruire le chemin
         path = self._reconstruct_path(predecessors, start, end)
         
         execution_time = time.time() - start_time
@@ -90,6 +76,7 @@ class AStar:
             'distance': g_score.get(end, float('inf')),
             'nodes_visited': len(visited),
             'visited_set': visited,
+            'visited_steps': visited_steps,
             'execution_time': execution_time,
             'algorithm': 'A*'
         }
