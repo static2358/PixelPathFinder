@@ -488,17 +488,14 @@ class Application:
             path_coords = [(j, i) for (i, j) in self.current_path]
             draw.line(path_coords, fill=path_color, width=max(1, int(2/self.zoom_level)))
         
-        marker_size = max(2, int(4 / self.zoom_level))
-        
+        # Marqueurs de 1 pixel
         if self.start_pixel:
             i, j = self.start_pixel
-            draw.ellipse([j - marker_size, i - marker_size, j + marker_size, i + marker_size],
-                fill=(34, 197, 94), outline=(255, 255, 255))
+            draw.point((j, i), fill=(34, 197, 94))
         
         if self.end_pixel:
             i, j = self.end_pixel
-            draw.ellipse([j - marker_size, i - marker_size, j + marker_size, i + marker_size],
-                fill=(239, 68, 68), outline=(255, 255, 255))
+            draw.point((j, i), fill=(239, 68, 68))
         
         new_width = int(img.width * self.zoom_level)
         new_height = int(img.height * self.zoom_level)
