@@ -14,12 +14,12 @@ class AStar:
         self.graph = graph
     
 
-    # Heuristique Chebyshev
-    # Plus petite que Manhattan, meilleur compromis vitesse/precision
+    # Heuristique basée sur l'intensité
+    # |intensité(pixel) - intensité(goal)| est une borne inférieure admissible
     def _heuristic(self, pixel, goal):
-        i1, j1 = pixel
-        i2, j2 = goal
-        return max(abs(i1 - i2), abs(j1 - j2))
+        intensity_current = self.graph.get_pixel_value(pixel[0], pixel[1])
+        intensity_goal = self.graph.get_pixel_value(goal[0], goal[1])
+        return abs(intensity_current - intensity_goal)
     
 
     # Retourne le plus court chemin entre deux pixels

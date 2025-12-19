@@ -35,7 +35,7 @@ class Application:
         self.root.title("Pathfinder")
         self.root.geometry("1200x720")
         self.root.configure(bg=self.COLORS['bg'])
-        self.root.minsize(1100, 700)
+        self.root.minsize(1200, 720)
         
         self._set_dark_title_bar()
         
