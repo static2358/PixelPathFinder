@@ -1,86 +1,46 @@
-from PIL import Image
+﻿from PIL import Image
 
 
-"""
-    Représente une image sous forme de graphe.
-    - Chaque pixel est un sommet identifié par des indices (i, j)
-    - Les arêtes connectent les pixels voisins (4-connexité)
-    - Le poids d'une arête est la différence d'intensité 2 pixels
-"""
 class Graph:
-
+    """
+    Represente une image sous forme de graphe.
+    - Chaque pixel est un sommet identifie par des indices (i, j)
+    - Les aretes connectent les pixels voisins (4-connexite)
+    - Le poids d'une arete est la difference d'intensite entre 2 pixels
+    """
+    
     DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    
 
-    # Conversion de l'image en matrice 2d
     def __init__(self, image_path):
+        """Conversion de l'image en matrice 2D de niveaux de gris"""
         image = Image.open(image_path).convert('L')
-        
-        self.width = image.width
-        self.height = image.height
-        
-        self.pixels = []
-        for i in range(self.height):
-            row = []
-            for j in range(self.width):
-                pixel_value = image.getpixel((j, i))
-                row.append(pixel_value)
-            self.pixels.append(row)
+        self.width, self.height = image.width, image.height
+        self.pixels = [[image.getpixel((j, i)) for j in range(self.width)] 
+                       for i in range(self.height)]
 
-
-    # vérifie si un pixel est valide 
     def is_valid_pixel(self, i, j):
+        """Verifie si un pixel est dans les limites de l'image"""
+        return 0 <= i < self.height and 0 <= j < self.width
 
-        if i < 0 or i >= self.height:
-            return False
-        
-        if j < 0 or j >= self.width:
-            return False
-        
-        return True
-    
-
-    # Retourne la valeur du pixel (i, j) en grayscale
     def get_pixel_value(self, i, j):
-
+        """Retourne la valeur du pixel (i, j) en grayscale"""
         if not self.is_valid_pixel(i, j):
-            raise ValueError(f"Coordonnées invalides: ({i}, {j})")
-        
+            raise ValueError(f"Coordonnees invalides: ({i}, {j})")
         return self.pixels[i][j]
-    
 
-    # Retourne la liste des voisins d'un pixel (i, j)
     def get_neighbors(self, i, j):
+        """Retourne la liste des voisins d'un pixel (i, j)"""
+        return [(i + di, j + dj) for di, dj in self.DIRECTIONS 
+                if self.is_valid_pixel(i + di, j + dj)]
 
-        neighbors = []
-
-        for di, dj in self.DIRECTIONS:
-            ni = i + di
-            nj = j + dj
-
-            if self.is_valid_pixel(ni, nj):
-                neighbors.append((ni, nj))
-        
-        return neighbors
-    
-
-    # Retourne le poids de l'arête reliant deux pixels
     def get_edge_weight(self, pixel1, pixel2):
+        """Retourne le poids de l'arete reliant deux pixels"""
+        return abs(self.pixels[pixel1[0]][pixel1[1]] - self.pixels[pixel2[0]][pixel2[1]])
 
-        i1, j1 = pixel1
-        i2, j2 = pixel2
-
-        intensity1 = self.get_pixel_value(i1, j1)
-        intensity2 = self.get_pixel_value(i2, j2)
-
-        return abs(intensity1 - intensity2)
-
-
-    # Retourne les dimensions de l'image
     def get_dimensions(self):
+        """Retourne les dimensions de l'image (hauteur, largeur)"""
         return (self.height, self.width)
-    
 
-    # Retourne le nombre de pixels de l'image (nombre de sommets du graphe)
     def get_total_vertices(self):
-        return self.height * self.width   
+        """Retourne le nombre de pixels de l'image"""
+        return self.height * self.width
