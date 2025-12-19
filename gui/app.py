@@ -35,7 +35,7 @@ class Application:
         self.image_graph = self.original_image = self.photo_image = None
         self.start_pixel = self.end_pixel = self.last_result = None
         self.current_path = []
-        self.zoom_level, self.min_zoom, self.max_zoom = 1.0, 0.1, 5.0
+        self.zoom_level, self.min_zoom, self.max_zoom = 1.0, 0.1, 20.0
         
         self.algorithm = tk.StringVar(value="dijkstra")
         self.heuristic = tk.StringVar(value="Intensite")
