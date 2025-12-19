@@ -6,8 +6,8 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 project = 'PixelPathfinder'
-copyright = '2024'
-author = 'Auteur'
+copyright = '2025'
+author = 'Ali Gouarab'
 release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
