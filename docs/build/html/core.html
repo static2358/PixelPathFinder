@@ -1,0 +1,663 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module Core &mdash; Documentation PixelPathfinder 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=05dadb3a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Module GUI" href="gui.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PixelPathfinder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Module Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-core.graph">Graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core.graph.Graph"><code class="docutils literal notranslate"><span class="pre">Graph</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-core.dijkstra">Dijkstra</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core.dijkstra.Dijkstra"><code class="docutils literal notranslate"><span class="pre">Dijkstra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-core.astar">A* (A-Star)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core.astar.AStar"><code class="docutils literal notranslate"><span class="pre">AStar</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">Module GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gui.html#module-gui.app">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gui.html#gui.app.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-main">Module principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PixelPathfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">Module Core</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/core.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-core">
+<h1>Module Core<a class="headerlink" href="#module-core" title="Lien vers cette rubrique"></a></h1>
+<p>Ce module contient les classes fondamentales pour la representation
+du graphe et les algorithmes de recherche de chemin.</p>
+<section id="module-core.graph">
+<span id="graph"></span><h2>Graph<a class="headerlink" href="#module-core.graph" title="Lien vers cette rubrique"></a></h2>
+<p>Module de representation d’une image sous forme de graphe.</p>
+<p>Ce module fournit la classe Graph qui permet de convertir une image
+en une structure de graphe pour les algorithmes de recherche de chemin.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.graph.Graph">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.graph.</span></span><span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represente une image sous forme de graphe pour la recherche de chemin.</p>
+<p>Chaque pixel de l’image devient un sommet du graphe identifie par ses
+coordonnees (i, j). Les aretes connectent les pixels voisins selon une
+4-connexite (haut, bas, gauche, droite). Le poids d’une arete correspond
+a la difference d’intensite en niveaux de gris entre deux pixels adjacents.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.graph.Graph.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#core.graph.Graph.width" title="Lien vers cette définition"></a></dt>
+<dd><p>Largeur de l’image en pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.graph.Graph.height">
+<span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#core.graph.Graph.height" title="Lien vers cette définition"></a></dt>
+<dd><p>Hauteur de l’image en pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.graph.Graph.pixels">
+<span class="sig-name descname"><span class="pre">pixels</span></span><a class="headerlink" href="#core.graph.Graph.pixels" title="Lien vers cette définition"></a></dt>
+<dd><p>Matrice 2D des valeurs de gris (0-255).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.graph.Graph.DIRECTIONS">
+<span class="sig-name descname"><span class="pre">DIRECTIONS</span></span><a class="headerlink" href="#core.graph.Graph.DIRECTIONS" title="Lien vers cette définition"></a></dt>
+<dd><p>Directions de deplacement (4-connexite).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-exemple admonition">
+<p class="admonition-title">Exemple</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">get_pixel_value</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="go">128</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="go">[(9, 20), (11, 20), (10, 19), (10, 21)]</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.__init__" title="Lien vers cette définition"></a></dt>
+<dd><p>Initialise le graphe a partir d’une image.</p>
+<p>Charge l’image, la convertit en niveaux de gris et stocke les valeurs
+des pixels dans une matrice 2D.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Chemin vers le fichier image a charger.</p>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#FileNotFoundError" title="(disponible dans Python v3.14)"><strong>FileNotFoundError</strong></a> – Si le fichier image n’existe pas.</p></li>
+<li><p><a class="reference external" href="https://pillow.readthedocs.io/en/stable/PIL.html#PIL.UnidentifiedImageError" title="(disponible dans Pillow (PIL Fork) v12.0.0)"><strong>PIL.UnidentifiedImageError</strong></a> – Si le fichier n’est pas une image valide.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.is_valid_pixel">
+<span class="sig-name descname"><span class="pre">is_valid_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.is_valid_pixel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.is_valid_pixel" title="Lien vers cette définition"></a></dt>
+<dd><p>Verifie si les coordonnees correspondent a un pixel valide.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee ligne (verticale) du pixel.</p></li>
+<li><p><strong>j</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee colonne (horizontale) du pixel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si le pixel est dans les limites de l’image, False sinon.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.get_pixel_value">
+<span class="sig-name descname"><span class="pre">get_pixel_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.get_pixel_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.get_pixel_value" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne la valeur d’intensite d’un pixel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee ligne du pixel.</p></li>
+<li><p><strong>j</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee colonne du pixel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Valeur de gris du pixel (0-255).</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a></p>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(disponible dans Python v3.14)"><strong>ValueError</strong></a> – Si les coordonnees sont en dehors de l’image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.get_neighbors">
+<span class="sig-name descname"><span class="pre">get_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.get_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.get_neighbors" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne la liste des pixels voisins valides.</p>
+<p>Utilise une 4-connexite (haut, bas, gauche, droite).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee ligne du pixel.</p></li>
+<li><p><strong>j</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee colonne du pixel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste des coordonnees (i, j) des voisins valides.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.get_edge_weight">
+<span class="sig-name descname"><span class="pre">get_edge_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixel2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.get_edge_weight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.get_edge_weight" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule le poids de l’arete entre deux pixels.</p>
+<p>Le poids est la valeur absolue de la difference d’intensite
+entre les deux pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pixel1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du premier pixel.</p></li>
+<li><p><strong>pixel2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du second pixel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Poids de l’arete (difference d’intensite, 0-255).</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.get_dimensions">
+<span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.get_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.get_dimensions" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne les dimensions de l’image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Renvoie<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple (hauteur, largeur) en pixels.</p>
+</dd>
+<dt class="field-even">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.graph.Graph.get_total_vertices">
+<span class="sig-name descname"><span class="pre">get_total_vertices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/graph.html#Graph.get_total_vertices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.graph.Graph.get_total_vertices" title="Lien vers cette définition"></a></dt>
+<dd><p>Retourne le nombre total de sommets du graphe.</p>
+<p>Correspond au nombre total de pixels de l’image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Renvoie<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Nombre de pixels (hauteur * largeur).</p>
+</dd>
+<dt class="field-even">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-core.dijkstra">
+<span id="dijkstra"></span><h2>Dijkstra<a class="headerlink" href="#module-core.dijkstra" title="Lien vers cette rubrique"></a></h2>
+<p>Module implementant l’algorithme de Dijkstra pour la recherche de chemin.</p>
+<p>Ce module fournit une implementation de l’algorithme de Dijkstra optimisee
+pour la recherche du plus court chemin dans un graphe represenant une image.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.dijkstra.</span></span><span class="sig-name descname"><span class="pre">Dijkstra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/dijkstra.html#Dijkstra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.dijkstra.Dijkstra" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Implementation de l’algorithme de Dijkstra pour graphes images.</p>
+<p>L’algorithme trouve le chemin de cout minimal entre deux pixels d’une image,
+ou le cout est base sur les differences d’intensite entre pixels adjacents.
+Utilise une file de priorite (heap) pour une complexite optimale.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#core.dijkstra.Dijkstra.graph" title="Lien vers cette définition"></a></dt>
+<dd><p>Instance du graphe image sur lequel effectuer la recherche.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#core.graph.Graph" title="core.graph.Graph">Graph</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-exemple admonition">
+<p class="admonition-title">Exemple</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">core.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dijkstra</span> <span class="o">=</span> <span class="n">Dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">dijkstra</span><span class="o">.</span><span class="n">find_shortest_path</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chemin trouve: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> pixels&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/dijkstra.html#Dijkstra.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.dijkstra.Dijkstra.__init__" title="Lien vers cette définition"></a></dt>
+<dd><p>Initialise l’algorithme avec un graphe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="#core.graph.Graph" title="core.graph.Graph"><em>Graph</em></a>) – Instance du graphe image a parcourir.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra.find_shortest_path">
+<span class="sig-name descname"><span class="pre">find_shortest_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/dijkstra.html#Dijkstra.find_shortest_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.dijkstra.Dijkstra.find_shortest_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Trouve le plus court chemin entre deux pixels.</p>
+<p>Utilise l’algorithme de Dijkstra avec file de priorite pour trouver
+le chemin de cout minimal base sur les differences d’intensite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionnaire contenant les resultats:</dt><dd><ul class="simple">
+<li><p>path (list[tuple]): Liste ordonnee des pixels du chemin.</p></li>
+<li><p>distance (float): Cout total du chemin.</p></li>
+<li><p>nodes_visited (int): Nombre de noeuds explores.</p></li>
+<li><p>visited_set (set): Ensemble des pixels visites.</p></li>
+<li><p>visited_steps (list): Ordre de visite des pixels.</p></li>
+<li><p>execution_time (float): Temps d’execution en secondes.</p></li>
+<li><p>algorithm (str): Nom de l’algorithme (« Dijkstra »).</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)">dict</a></p>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(disponible dans Python v3.14)"><strong>ValueError</strong></a> – Si les pixels de depart ou d’arrivee sont invalides.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra._validate_pixels">
+<span class="sig-name descname"><span class="pre">_validate_pixels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/dijkstra.html#Dijkstra._validate_pixels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.dijkstra.Dijkstra._validate_pixels" title="Lien vers cette définition"></a></dt>
+<dd><p>Valide les pixels de depart et d’arrivee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(disponible dans Python v3.14)"><strong>ValueError</strong></a> – Si un des pixels est en dehors des limites de l’image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.dijkstra.Dijkstra._reconstruct_path">
+<span class="sig-name descname"><span class="pre">_reconstruct_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/dijkstra.html#Dijkstra._reconstruct_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.dijkstra.Dijkstra._reconstruct_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Reconstruit le chemin a partir des predecesseurs.</p>
+<p>Parcourt le dictionnaire des predecesseurs en remontant de la fin
+vers le debut pour reconstituer le chemin complet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predecessors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)"><em>dict</em></a>) – Dictionnaire {pixel: predecesseur}.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Liste ordonnee des pixels du chemin,</dt><dd><p>ou liste vide si aucun chemin n’existe.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-core.astar">
+<span id="a-a-star"></span><h2>A* (A-Star)<a class="headerlink" href="#module-core.astar" title="Lien vers cette rubrique"></a></h2>
+<p>Module implementant l’algorithme A* pour la recherche de chemin.</p>
+<p>Ce module fournit une implementation de l’algorithme A* avec plusieurs
+heuristiques disponibles pour la recherche de chemin dans un graphe image.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="core.astar.AStar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">core.astar.</span></span><span class="sig-name descname"><span class="pre">AStar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heuristic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Implementation de l’algorithme A* pour graphes images.</p>
+<p>L’algorithme A* combine le cout reel du chemin avec une heuristique
+pour guider la recherche vers la destination de maniere plus efficace
+que Dijkstra. Plusieurs heuristiques sont disponibles.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.astar.AStar.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#core.astar.AStar.graph" title="Lien vers cette définition"></a></dt>
+<dd><p>Instance du graphe image sur lequel effectuer la recherche.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#core.graph.Graph" title="core.graph.Graph">Graph</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.astar.AStar.heuristic">
+<span class="sig-name descname"><span class="pre">heuristic</span></span><a class="headerlink" href="#core.astar.AStar.heuristic" title="Lien vers cette définition"></a></dt>
+<dd><p>Type d’heuristique utilisee (“intensity”, “manhattan”,
+“euclidean”, “chebyshev”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="core.astar.AStar.HEURISTICS">
+<span class="sig-name descname"><span class="pre">HEURISTICS</span></span><a class="headerlink" href="#core.astar.AStar.HEURISTICS" title="Lien vers cette définition"></a></dt>
+<dd><p>Mapping des identifiants d’heuristiques vers leurs noms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-exemple admonition">
+<p class="admonition-title">Exemple</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">core.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">astar</span> <span class="o">=</span> <span class="n">AStar</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">heuristic</span><span class="o">=</span><span class="s1">&#39;manhattan&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">astar</span><span class="o">.</span><span class="n">find_shortest_path</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chemin trouve: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> pixels&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="core.astar.AStar.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heuristic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'intensity'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar.__init__" title="Lien vers cette définition"></a></dt>
+<dd><p>Initialise l’algorithme avec un graphe et une heuristique.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<a class="reference internal" href="#core.graph.Graph" title="core.graph.Graph"><em>Graph</em></a>) – Instance du graphe image a parcourir.</p></li>
+<li><p><strong>heuristic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Type d’heuristique a utiliser.
+Options: “intensity”, “manhattan”, “euclidean”, “chebyshev”.
+Defaults to “intensity”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.astar.AStar._get_heuristic_value">
+<span class="sig-name descname"><span class="pre">_get_heuristic_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">goal</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar._get_heuristic_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar._get_heuristic_value" title="Lien vers cette définition"></a></dt>
+<dd><p>Calcule la valeur heuristique entre un pixel et la destination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pixel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel courant.</p></li>
+<li><p><strong>goal</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel destination.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Valeur heuristique estimant le cout restant.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.14)">float</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Les heuristiques disponibles sont:</p>
+<ul class="simple">
+<li><p>intensity: Difference d’intensite avec le pixel destination.</p></li>
+<li><p>manhattan: Distance de Manhattan (somme des differences absolues).</p></li>
+<li><p>euclidean: Distance euclidienne (racine carree de la somme des carres).</p></li>
+<li><p>chebyshev: Distance de Chebyshev (maximum des differences absolues).</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.astar.AStar.find_shortest_path">
+<span class="sig-name descname"><span class="pre">find_shortest_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar.find_shortest_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar.find_shortest_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Trouve le plus court chemin entre deux pixels avec A*.</p>
+<p>Utilise l’algorithme A* avec l’heuristique configuree pour trouver
+un chemin optimal plus rapidement que Dijkstra dans la plupart des cas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionnaire contenant les resultats:</dt><dd><ul class="simple">
+<li><p>path (list[tuple]): Liste ordonnee des pixels du chemin.</p></li>
+<li><p>distance (float): Cout total du chemin (g-score).</p></li>
+<li><p>nodes_visited (int): Nombre de noeuds explores.</p></li>
+<li><p>visited_set (set): Ensemble des pixels visites.</p></li>
+<li><p>visited_steps (list): Ordre de visite des pixels.</p></li>
+<li><p>execution_time (float): Temps d’execution en secondes.</p></li>
+<li><p>algorithm (str): Nom de l’algorithme (« A* »).</p></li>
+<li><p>heuristic (str): Nom de l’heuristique utilisee.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)">dict</a></p>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(disponible dans Python v3.14)"><strong>ValueError</strong></a> – Si les pixels de depart ou d’arrivee sont invalides.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.astar.AStar._validate_pixels">
+<span class="sig-name descname"><span class="pre">_validate_pixels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar._validate_pixels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar._validate_pixels" title="Lien vers cette définition"></a></dt>
+<dd><p>Valide les pixels de depart et d’arrivee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees du pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(disponible dans Python v3.14)"><strong>ValueError</strong></a> – Si un des pixels est en dehors des limites de l’image.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="core.astar.AStar._reconstruct_path">
+<span class="sig-name descname"><span class="pre">_reconstruct_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predecessors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/core/astar.html#AStar._reconstruct_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#core.astar.AStar._reconstruct_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Reconstruit le chemin a partir des predecesseurs.</p>
+<p>Parcourt le dictionnaire des predecesseurs en remontant de la fin
+vers le debut pour reconstituer le chemin complet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predecessors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)"><em>dict</em></a>) – Dictionnaire {pixel: predecesseur}.</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Pixel de depart.</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Pixel d’arrivee.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Liste ordonnee des pixels du chemin,</dt><dd><p>ou liste vide si aucun chemin n’existe.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="modules.html" class="btn btn-neutral float-left" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="gui.html" class="btn btn-neutral float-right" title="Module GUI" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2024.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

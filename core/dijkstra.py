@@ -1,15 +1,62 @@
-﻿import heapq
+﻿"""Module implementant l'algorithme de Dijkstra pour la recherche de chemin.
+
+Ce module fournit une implementation de l'algorithme de Dijkstra optimisee
+pour la recherche du plus court chemin dans un graphe represenant une image.
+"""
+
+import heapq
 import time
 
 
 class Dijkstra:
-    """Implemente l'algorithme de Dijkstra pour trouver le plus court chemin dans un graphe image"""
+    """Implementation de l'algorithme de Dijkstra pour graphes images.
+
+    L'algorithme trouve le chemin de cout minimal entre deux pixels d'une image,
+    ou le cout est base sur les differences d'intensite entre pixels adjacents.
+    Utilise une file de priorite (heap) pour une complexite optimale.
+
+    Attributes:
+        graph (Graph): Instance du graphe image sur lequel effectuer la recherche.
+
+    Example:
+        >>> from core.graph import Graph
+        >>> graph = Graph("image.png")
+        >>> dijkstra = Dijkstra(graph)
+        >>> result = dijkstra.find_shortest_path((0, 0), (100, 100))
+        >>> print(f"Chemin trouve: {len(result['path'])} pixels")
+    """
 
     def __init__(self, graph):
+        """Initialise l'algorithme avec un graphe.
+
+        Args:
+            graph (Graph): Instance du graphe image a parcourir.
+        """
         self.graph = graph
 
     def find_shortest_path(self, start, end):
-        """Retourne le plus court chemin entre deux pixels"""
+        """Trouve le plus court chemin entre deux pixels.
+
+        Utilise l'algorithme de Dijkstra avec file de priorite pour trouver
+        le chemin de cout minimal base sur les differences d'intensite.
+
+        Args:
+            start (tuple[int, int]): Coordonnees (i, j) du pixel de depart.
+            end (tuple[int, int]): Coordonnees (i, j) du pixel d'arrivee.
+
+        Returns:
+            dict: Dictionnaire contenant les resultats:
+                - path (list[tuple]): Liste ordonnee des pixels du chemin.
+                - distance (float): Cout total du chemin.
+                - nodes_visited (int): Nombre de noeuds explores.
+                - visited_set (set): Ensemble des pixels visites.
+                - visited_steps (list): Ordre de visite des pixels.
+                - execution_time (float): Temps d'execution en secondes.
+                - algorithm (str): Nom de l'algorithme ("Dijkstra").
+
+        Raises:
+            ValueError: Si les pixels de depart ou d'arrivee sont invalides.
+        """
         start_time = time.time()
         self._validate_pixels(start, end)
         
@@ -53,14 +100,35 @@ class Dijkstra:
         }
 
     def _validate_pixels(self, start, end):
-        """Valide les pixels de depart et d'arrivee"""
+        """Valide les pixels de depart et d'arrivee.
+
+        Args:
+            start (tuple[int, int]): Coordonnees du pixel de depart.
+            end (tuple[int, int]): Coordonnees du pixel d'arrivee.
+
+        Raises:
+            ValueError: Si un des pixels est en dehors des limites de l'image.
+        """
         if not self.graph.is_valid_pixel(*start):
             raise ValueError(f"Pixel de depart invalide: {start}")
         if not self.graph.is_valid_pixel(*end):
             raise ValueError(f"Pixel d'arrivee invalide: {end}")
 
     def _reconstruct_path(self, predecessors, start, end):
-        """Reconstruit le chemin entre le pixel de depart et le pixel d'arrivee"""
+        """Reconstruit le chemin a partir des predecesseurs.
+
+        Parcourt le dictionnaire des predecesseurs en remontant de la fin
+        vers le debut pour reconstituer le chemin complet.
+
+        Args:
+            predecessors (dict): Dictionnaire {pixel: predecesseur}.
+            start (tuple[int, int]): Pixel de depart.
+            end (tuple[int, int]): Pixel d'arrivee.
+
+        Returns:
+            list[tuple[int, int]]: Liste ordonnee des pixels du chemin,
+                ou liste vide si aucun chemin n'existe.
+        """
         if end not in predecessors and end != start:
             return []
         path = []

@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core.dijkstra &mdash; Documentation Pathfinder 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=05dadb3a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Pathfinder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../core.html">Module Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#module-core.graph">Graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph"><code class="docutils literal notranslate"><span class="pre">Graph</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#module-core.dijkstra">Dijkstra</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra"><code class="docutils literal notranslate"><span class="pre">Dijkstra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#module-core.astar">A* (A-Star)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar"><code class="docutils literal notranslate"><span class="pre">AStar</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui.html">Module GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gui.html#module-gui.app">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-main">Module principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../core.html">Module Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../core.html#module-core.graph">Graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#core.graph.Graph"><code class="docutils literal notranslate"><span class="pre">Graph</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.width"><code class="docutils literal notranslate"><span class="pre">Graph.width</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.height"><code class="docutils literal notranslate"><span class="pre">Graph.height</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.pixels"><code class="docutils literal notranslate"><span class="pre">Graph.pixels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.DIRECTIONS"><code class="docutils literal notranslate"><span class="pre">Graph.DIRECTIONS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#id0"><code class="docutils literal notranslate"><span class="pre">Graph.DIRECTIONS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.__init__"><code class="docutils literal notranslate"><span class="pre">Graph.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.is_valid_pixel"><code class="docutils literal notranslate"><span class="pre">Graph.is_valid_pixel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.get_pixel_value"><code class="docutils literal notranslate"><span class="pre">Graph.get_pixel_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.get_neighbors"><code class="docutils literal notranslate"><span class="pre">Graph.get_neighbors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.get_edge_weight"><code class="docutils literal notranslate"><span class="pre">Graph.get_edge_weight()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.get_dimensions"><code class="docutils literal notranslate"><span class="pre">Graph.get_dimensions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.graph.Graph.get_total_vertices"><code class="docutils literal notranslate"><span class="pre">Graph.get_total_vertices()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../core.html#module-core.dijkstra">Dijkstra</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra"><code class="docutils literal notranslate"><span class="pre">Dijkstra</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra.graph"><code class="docutils literal notranslate"><span class="pre">Dijkstra.graph</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra.__init__"><code class="docutils literal notranslate"><span class="pre">Dijkstra.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra.find_shortest_path"><code class="docutils literal notranslate"><span class="pre">Dijkstra.find_shortest_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra._validate_pixels"><code class="docutils literal notranslate"><span class="pre">Dijkstra._validate_pixels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.dijkstra.Dijkstra._reconstruct_path"><code class="docutils literal notranslate"><span class="pre">Dijkstra._reconstruct_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../core.html#module-core.astar">A* (A-Star)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../core.html#core.astar.AStar"><code class="docutils literal notranslate"><span class="pre">AStar</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar.graph"><code class="docutils literal notranslate"><span class="pre">AStar.graph</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar.heuristic"><code class="docutils literal notranslate"><span class="pre">AStar.heuristic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar.HEURISTICS"><code class="docutils literal notranslate"><span class="pre">AStar.HEURISTICS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#id1"><code class="docutils literal notranslate"><span class="pre">AStar.HEURISTICS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar.__init__"><code class="docutils literal notranslate"><span class="pre">AStar.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar._get_heuristic_value"><code class="docutils literal notranslate"><span class="pre">AStar._get_heuristic_value()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar.find_shortest_path"><code class="docutils literal notranslate"><span class="pre">AStar.find_shortest_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar._validate_pixels"><code class="docutils literal notranslate"><span class="pre">AStar._validate_pixels()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core.html#core.astar.AStar._reconstruct_path"><code class="docutils literal notranslate"><span class="pre">AStar._reconstruct_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gui.html">Module GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gui.html#module-gui.app">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../gui.html#gui.app.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.root"><code class="docutils literal notranslate"><span class="pre">Application.root</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.COLORS"><code class="docutils literal notranslate"><span class="pre">Application.COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.HEURISTIC_MAP"><code class="docutils literal notranslate"><span class="pre">Application.HEURISTIC_MAP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.image_graph"><code class="docutils literal notranslate"><span class="pre">Application.image_graph</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.original_image"><code class="docutils literal notranslate"><span class="pre">Application.original_image</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.start_pixel"><code class="docutils literal notranslate"><span class="pre">Application.start_pixel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.end_pixel"><code class="docutils literal notranslate"><span class="pre">Application.end_pixel</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.current_path"><code class="docutils literal notranslate"><span class="pre">Application.current_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.zoom_level"><code class="docutils literal notranslate"><span class="pre">Application.zoom_level</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.algorithm"><code class="docutils literal notranslate"><span class="pre">Application.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.heuristic"><code class="docutils literal notranslate"><span class="pre">Application.heuristic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.animation_enabled"><code class="docutils literal notranslate"><span class="pre">Application.animation_enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#id0"><code class="docutils literal notranslate"><span class="pre">Application.COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#id1"><code class="docutils literal notranslate"><span class="pre">Application.HEURISTIC_MAP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.__init__"><code class="docutils literal notranslate"><span class="pre">Application.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._setup_styles"><code class="docutils literal notranslate"><span class="pre">Application._setup_styles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._build_ui"><code class="docutils literal notranslate"><span class="pre">Application._build_ui()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._create_card"><code class="docutils literal notranslate"><span class="pre">Application._create_card()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._create_button"><code class="docutils literal notranslate"><span class="pre">Application._create_button()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._create_radiobutton"><code class="docutils literal notranslate"><span class="pre">Application._create_radiobutton()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._create_coord_inputs"><code class="docutils literal notranslate"><span class="pre">Application._create_coord_inputs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._lighten_color"><code class="docutils literal notranslate"><span class="pre">Application._lighten_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._set_dark_title_bar"><code class="docutils literal notranslate"><span class="pre">Application._set_dark_title_bar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._show_placeholder"><code class="docutils literal notranslate"><span class="pre">Application._show_placeholder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._load_image"><code class="docutils literal notranslate"><span class="pre">Application._load_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._on_mousewheel"><code class="docutils literal notranslate"><span class="pre">Application._on_mousewheel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._zoom_at_point"><code class="docutils literal notranslate"><span class="pre">Application._zoom_at_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._update_display"><code class="docutils literal notranslate"><span class="pre">Application._update_display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._get_path_color"><code class="docutils literal notranslate"><span class="pre">Application._get_path_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._is_red_pixel"><code class="docutils literal notranslate"><span class="pre">Application._is_red_pixel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._canvas_to_pixel"><code class="docutils literal notranslate"><span class="pre">Application._canvas_to_pixel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._on_left_click"><code class="docutils literal notranslate"><span class="pre">Application._on_left_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._on_right_click"><code class="docutils literal notranslate"><span class="pre">Application._on_right_click()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._on_mouse_move"><code class="docutils literal notranslate"><span class="pre">Application._on_mouse_move()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._set_point_from_entry"><code class="docutils literal notranslate"><span class="pre">Application._set_point_from_entry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._set_start_from_entry"><code class="docutils literal notranslate"><span class="pre">Application._set_start_from_entry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._set_end_from_entry"><code class="docutils literal notranslate"><span class="pre">Application._set_end_from_entry()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._update_buttons_state"><code class="docutils literal notranslate"><span class="pre">Application._update_buttons_state()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._on_algorithm_change"><code class="docutils literal notranslate"><span class="pre">Application._on_algorithm_change()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._compute_path"><code class="docutils literal notranslate"><span class="pre">Application._compute_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._compute_path_animated"><code class="docutils literal notranslate"><span class="pre">Application._compute_path_animated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._animate_step"><code class="docutils literal notranslate"><span class="pre">Application._animate_step()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._update_display_animated"><code class="docutils literal notranslate"><span class="pre">Application._update_display_animated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._finish_animation"><code class="docutils literal notranslate"><span class="pre">Application._finish_animation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._reset"><code class="docutils literal notranslate"><span class="pre">Application._reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application._show_matplotlib"><code class="docutils literal notranslate"><span class="pre">Application._show_matplotlib()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../gui.html#gui.app.Application.run"><code class="docutils literal notranslate"><span class="pre">Application.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Pathfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">core.dijkstra</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de core.dijkstra</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module implementant l&#39;algorithme de Dijkstra pour la recherche de chemin.</span>
+
+<span class="sd">Ce module fournit une implementation de l&#39;algorithme de Dijkstra optimisee</span>
+<span class="sd">pour la recherche du plus court chemin dans un graphe represenant une image.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+
+<div class="viewcode-block" id="Dijkstra">
+<a class="viewcode-back" href="../../core.html#core.dijkstra.Dijkstra">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Dijkstra</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation de l&#39;algorithme de Dijkstra pour graphes images.</span>
+
+<span class="sd">    L&#39;algorithme trouve le chemin de cout minimal entre deux pixels d&#39;une image,</span>
+<span class="sd">    ou le cout est base sur les differences d&#39;intensite entre pixels adjacents.</span>
+<span class="sd">    Utilise une file de priorite (heap) pour une complexite optimale.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        graph (Graph): Instance du graphe image sur lequel effectuer la recherche.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from core.graph import Graph</span>
+<span class="sd">        &gt;&gt;&gt; graph = Graph(&quot;image.png&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; dijkstra = Dijkstra(graph)</span>
+<span class="sd">        &gt;&gt;&gt; result = dijkstra.find_shortest_path((0, 0), (100, 100))</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Chemin trouve: {len(result[&#39;path&#39;])} pixels&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Dijkstra.__init__">
+<a class="viewcode-back" href="../../core.html#core.dijkstra.Dijkstra.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise l&#39;algorithme avec un graphe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            graph (Graph): Instance du graphe image a parcourir.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="Dijkstra.find_shortest_path">
+<a class="viewcode-back" href="../../core.html#core.dijkstra.Dijkstra.find_shortest_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_shortest_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Trouve le plus court chemin entre deux pixels.</span>
+
+<span class="sd">        Utilise l&#39;algorithme de Dijkstra avec file de priorite pour trouver</span>
+<span class="sd">        le chemin de cout minimal base sur les differences d&#39;intensite.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            start (tuple[int, int]): Coordonnees (i, j) du pixel de depart.</span>
+<span class="sd">            end (tuple[int, int]): Coordonnees (i, j) du pixel d&#39;arrivee.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Dictionnaire contenant les resultats:</span>
+<span class="sd">                - path (list[tuple]): Liste ordonnee des pixels du chemin.</span>
+<span class="sd">                - distance (float): Cout total du chemin.</span>
+<span class="sd">                - nodes_visited (int): Nombre de noeuds explores.</span>
+<span class="sd">                - visited_set (set): Ensemble des pixels visites.</span>
+<span class="sd">                - visited_steps (list): Ordre de visite des pixels.</span>
+<span class="sd">                - execution_time (float): Temps d&#39;execution en secondes.</span>
+<span class="sd">                - algorithm (str): Nom de l&#39;algorithme (&quot;Dijkstra&quot;).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Si les pixels de depart ou d&#39;arrivee sont invalides.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pixels</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">{</span><span class="n">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="n">predecessors</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">visited_steps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">priority_queue</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start</span><span class="p">)]</span>
+
+        <span class="k">while</span> <span class="n">priority_queue</span><span class="p">:</span>
+            <span class="n">current_distance</span><span class="p">,</span> <span class="n">current_pixel</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">priority_queue</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">current_pixel</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">current_pixel</span><span class="p">)</span>
+            <span class="n">visited_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_pixel</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">current_pixel</span> <span class="o">==</span> <span class="n">end</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="o">*</span><span class="n">current_pixel</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">new_distance</span> <span class="o">=</span> <span class="n">current_distance</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_edge_weight</span><span class="p">(</span><span class="n">current_pixel</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">new_distance</span> <span class="o">&lt;</span> <span class="n">distances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)):</span>
+                    <span class="n">distances</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_distance</span>
+                    <span class="n">predecessors</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_pixel</span>
+                    <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">priority_queue</span><span class="p">,</span> <span class="p">(</span><span class="n">new_distance</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reconstruct_path</span><span class="p">(</span><span class="n">predecessors</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span>
+            <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="n">distances</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)),</span>
+            <span class="s1">&#39;nodes_visited&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">visited</span><span class="p">),</span>
+            <span class="s1">&#39;visited_set&#39;</span><span class="p">:</span> <span class="n">visited</span><span class="p">,</span>
+            <span class="s1">&#39;visited_steps&#39;</span><span class="p">:</span> <span class="n">visited_steps</span><span class="p">,</span>
+            <span class="s1">&#39;execution_time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span>
+            <span class="s1">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s1">&#39;Dijkstra&#39;</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Dijkstra._validate_pixels">
+<a class="viewcode-back" href="../../core.html#core.dijkstra.Dijkstra._validate_pixels">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_pixels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Valide les pixels de depart et d&#39;arrivee.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            start (tuple[int, int]): Coordonnees du pixel de depart.</span>
+<span class="sd">            end (tuple[int, int]): Coordonnees du pixel d&#39;arrivee.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Si un des pixels est en dehors des limites de l&#39;image.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">is_valid_pixel</span><span class="p">(</span><span class="o">*</span><span class="n">start</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pixel de depart invalide: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">is_valid_pixel</span><span class="p">(</span><span class="o">*</span><span class="n">end</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pixel d&#39;arrivee invalide: </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Dijkstra._reconstruct_path">
+<a class="viewcode-back" href="../../core.html#core.dijkstra.Dijkstra._reconstruct_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reconstruct_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predecessors</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reconstruit le chemin a partir des predecesseurs.</span>
+
+<span class="sd">        Parcourt le dictionnaire des predecesseurs en remontant de la fin</span>
+<span class="sd">        vers le debut pour reconstituer le chemin complet.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            predecessors (dict): Dictionnaire {pixel: predecesseur}.</span>
+<span class="sd">            start (tuple[int, int]): Pixel de depart.</span>
+<span class="sd">            end (tuple[int, int]): Pixel d&#39;arrivee.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[tuple[int, int]]: Liste ordonnee des pixels du chemin,</span>
+<span class="sd">                ou liste vide si aucun chemin n&#39;existe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">predecessors</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">!=</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="k">while</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">predecessors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">path</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2024.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

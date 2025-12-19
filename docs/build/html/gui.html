@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module GUI &mdash; Documentation PixelPathfinder 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=05dadb3a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="Module Core" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PixelPathfinder
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenu:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core.html">Module Core</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#module-core.graph">Graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.graph.Graph"><code class="docutils literal notranslate"><span class="pre">Graph</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#module-core.dijkstra">Dijkstra</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.dijkstra.Dijkstra"><code class="docutils literal notranslate"><span class="pre">Dijkstra</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#module-core.astar">A* (A-Star)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#core.astar.AStar"><code class="docutils literal notranslate"><span class="pre">AStar</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Module GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-gui.app">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gui.app.Application"><code class="docutils literal notranslate"><span class="pre">Application</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-main">Module principal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PixelPathfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Modules</a></li>
+      <li class="breadcrumb-item active">Module GUI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/gui.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-gui">
+<h1>Module GUI<a class="headerlink" href="#module-gui" title="Lien vers cette rubrique"></a></h1>
+<p>Ce module contient l’interface graphique de l’application.</p>
+<section id="module-gui.app">
+<span id="application"></span><h2>Application<a class="headerlink" href="#module-gui.app" title="Lien vers cette rubrique"></a></h2>
+<p>Module principal de l’interface graphique de Pathfinder.</p>
+<p>Ce module contient la classe Application qui gere l’interface utilisateur
+Tkinter pour la visualisation et le calcul de chemins dans des images.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gui.app.Application">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gui.app.</span></span><span class="sig-name descname"><span class="pre">Application</span></span><a class="reference internal" href="_modules/gui/app.html#Application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Application principale de recherche de chemin dans des images.</p>
+<p>Cette classe cree une interface graphique permettant de charger une image,
+definir des points de depart et d’arrivee, et calculer le plus court chemin
+en utilisant les algorithmes Dijkstra ou A*.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.root">
+<span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#gui.app.Application.root" title="Lien vers cette définition"></a></dt>
+<dd><p>Fenetre principale Tkinter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.Tk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.COLORS">
+<span class="sig-name descname"><span class="pre">COLORS</span></span><a class="headerlink" href="#gui.app.Application.COLORS" title="Lien vers cette définition"></a></dt>
+<dd><p>Palette de couleurs pour le theme sombre.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.HEURISTIC_MAP">
+<span class="sig-name descname"><span class="pre">HEURISTIC_MAP</span></span><a class="headerlink" href="#gui.app.Application.HEURISTIC_MAP" title="Lien vers cette définition"></a></dt>
+<dd><p>Mapping des noms d’heuristiques vers leurs identifiants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.image_graph">
+<span class="sig-name descname"><span class="pre">image_graph</span></span><a class="headerlink" href="#gui.app.Application.image_graph" title="Lien vers cette définition"></a></dt>
+<dd><p>Graphe representant l’image chargee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="core.html#core.graph.Graph" title="core.graph.Graph">Graph</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.original_image">
+<span class="sig-name descname"><span class="pre">original_image</span></span><a class="headerlink" href="#gui.app.Application.original_image" title="Lien vers cette définition"></a></dt>
+<dd><p>Image PIL originale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.start_pixel">
+<span class="sig-name descname"><span class="pre">start_pixel</span></span><a class="headerlink" href="#gui.app.Application.start_pixel" title="Lien vers cette définition"></a></dt>
+<dd><p>Coordonnees du pixel de depart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.end_pixel">
+<span class="sig-name descname"><span class="pre">end_pixel</span></span><a class="headerlink" href="#gui.app.Application.end_pixel" title="Lien vers cette définition"></a></dt>
+<dd><p>Coordonnees du pixel d’arrivee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.current_path">
+<span class="sig-name descname"><span class="pre">current_path</span></span><a class="headerlink" href="#gui.app.Application.current_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Liste des pixels du chemin calcule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(disponible dans Python v3.14)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.zoom_level">
+<span class="sig-name descname"><span class="pre">zoom_level</span></span><a class="headerlink" href="#gui.app.Application.zoom_level" title="Lien vers cette définition"></a></dt>
+<dd><p>Niveau de zoom actuel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(disponible dans Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><a class="headerlink" href="#gui.app.Application.algorithm" title="Lien vers cette définition"></a></dt>
+<dd><p>Algorithme selectionne (“dijkstra” ou “astar”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.StringVar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.heuristic">
+<span class="sig-name descname"><span class="pre">heuristic</span></span><a class="headerlink" href="#gui.app.Application.heuristic" title="Lien vers cette définition"></a></dt>
+<dd><p>Heuristique selectionnee pour A*.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.StringVar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gui.app.Application.animation_enabled">
+<span class="sig-name descname"><span class="pre">animation_enabled</span></span><a class="headerlink" href="#gui.app.Application.animation_enabled" title="Lien vers cette définition"></a></dt>
+<dd><p>Active/desactive l’animation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.BooleanVar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-exemple admonition">
+<p class="admonition-title">Exemple</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application.__init__" title="Lien vers cette définition"></a></dt>
+<dd><p>Initialise l’application et configure l’interface graphique.</p>
+<p>Configure la fenetre principale, initialise les variables d’etat,
+applique les styles et construit l’interface utilisateur.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._setup_styles">
+<span class="sig-name descname"><span class="pre">_setup_styles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._setup_styles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._setup_styles" title="Lien vers cette définition"></a></dt>
+<dd><p>Configure les styles TTK pour le theme sombre.</p>
+<p>Applique les couleurs personnalisees aux widgets TTK
+comme les Combobox et les Frames.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._build_ui">
+<span class="sig-name descname"><span class="pre">_build_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._build_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._build_ui" title="Lien vers cette définition"></a></dt>
+<dd><p>Construit l’interface utilisateur complete.</p>
+<p>Cree la barre laterale avec les controles, le canvas pour l’image,
+et configure tous les widgets et leurs bindings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._create_card">
+<span class="sig-name descname"><span class="pre">_create_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._create_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._create_card" title="Lien vers cette définition"></a></dt>
+<dd><p>Cree un conteneur stylise avec un titre.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>tk.Widget</em>) – Widget parent.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Titre a afficher en haut de la carte.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frame interne pour ajouter du contenu.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.Frame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._create_button">
+<span class="sig-name descname"><span class="pre">_create_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">small</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._create_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._create_button" title="Lien vers cette définition"></a></dt>
+<dd><p>Cree un bouton stylise avec effets hover.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>tk.Widget</em>) – Widget parent.</p></li>
+<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Texte du bouton.</p></li>
+<li><p><strong>command</strong> (<em>callable</em>) – Fonction a appeler au clic.</p></li>
+<li><p><strong>color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Couleur de fond hexadecimale.</p></li>
+<li><p><strong>small</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Taille reduite. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Bouton configure.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.Button</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._create_radiobutton">
+<span class="sig-name descname"><span class="pre">_create_radiobutton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._create_radiobutton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._create_radiobutton" title="Lien vers cette définition"></a></dt>
+<dd><p>Cree un bouton radio stylise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>tk.Widget</em>) – Widget parent.</p></li>
+<li><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Texte du bouton radio.</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Valeur associee au bouton.</p></li>
+<li><p><strong>pack</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Auto-pack le widget. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Bouton radio configure.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tk.Radiobutton</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._create_coord_inputs">
+<span class="sig-name descname"><span class="pre">_create_coord_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._create_coord_inputs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._create_coord_inputs" title="Lien vers cette définition"></a></dt>
+<dd><p>Cree des champs de saisie pour les coordonnees X et Y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>tk.Widget</em>) – Widget parent.</p></li>
+<li><p><strong>x_var</strong> (<em>tk.StringVar</em>) – Variable pour la coordonnee X.</p></li>
+<li><p><strong>y_var</strong> (<em>tk.StringVar</em>) – Variable pour la coordonnee Y.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._lighten_color">
+<span class="sig-name descname"><span class="pre">_lighten_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_color</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._lighten_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._lighten_color" title="Lien vers cette définition"></a></dt>
+<dd><p>Eclaircit une couleur hexadecimale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hex_color</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)"><em>str</em></a>) – Couleur au format “#RRGGBB”.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Couleur eclaircie au format “#RRGGBB”.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(disponible dans Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._set_dark_title_bar">
+<span class="sig-name descname"><span class="pre">_set_dark_title_bar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._set_dark_title_bar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._set_dark_title_bar" title="Lien vers cette définition"></a></dt>
+<dd><p>Configure la barre de titre sombre sur Windows.</p>
+<p>Utilise l’API Windows DWM pour appliquer un theme sombre
+a la barre de titre de la fenetre.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._show_placeholder">
+<span class="sig-name descname"><span class="pre">_show_placeholder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._show_placeholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._show_placeholder" title="Lien vers cette définition"></a></dt>
+<dd><p>Affiche un message d’invitation sur le canvas vide.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._load_image">
+<span class="sig-name descname"><span class="pre">_load_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._load_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._load_image" title="Lien vers cette définition"></a></dt>
+<dd><p>Ouvre un dialogue pour charger une image.</p>
+<p>Charge l’image selectionnee, cree le graphe correspondant
+et reinitialise l’etat de l’application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._on_mousewheel">
+<span class="sig-name descname"><span class="pre">_on_mousewheel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._on_mousewheel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._on_mousewheel" title="Lien vers cette définition"></a></dt>
+<dd><p>Gere les evenements de molette de souris.</p>
+<p>Ctrl+Molette: Zoom avant/arriere.
+Shift+Molette: Defilement horizontal.
+Molette seule: Defilement vertical.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Evenement Tkinter de la molette.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._zoom_at_point">
+<span class="sig-name descname"><span class="pre">_zoom_at_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._zoom_at_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._zoom_at_point" title="Lien vers cette définition"></a></dt>
+<dd><p>Applique le zoom centre sur la position du curseur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Evenement Tkinter contenant la position du curseur.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._update_display">
+<span class="sig-name descname"><span class="pre">_update_display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._update_display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._update_display" title="Lien vers cette définition"></a></dt>
+<dd><p>Met a jour l’affichage du canvas avec l’image et le chemin.</p>
+<p>Redessine l’image a l’echelle du zoom actuel, trace le chemin
+s’il existe, et marque les points de depart et d’arrivee.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._get_path_color">
+<span class="sig-name descname"><span class="pre">_get_path_color</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._get_path_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._get_path_color" title="Lien vers cette définition"></a></dt>
+<dd><p>Determine la couleur du chemin selon le contenu de l’image.</p>
+<p>Analyse les pixels du chemin pour detecter si l’image contient
+beaucoup de rouge, auquel cas utilise cyan pour le contraste.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Renvoie<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Couleur RGB du chemin.</p>
+</dd>
+<dt class="field-even">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._is_red_pixel">
+<span class="sig-name descname"><span class="pre">_is_red_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._is_red_pixel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._is_red_pixel" title="Lien vers cette définition"></a></dt>
+<dd><p>Verifie si un pixel est predominamment rouge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pixel</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a><em>]</em>) – Coordonnees (i, j) du pixel.</p>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si le pixel est rouge, False sinon.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._canvas_to_pixel">
+<span class="sig-name descname"><span class="pre">_canvas_to_pixel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._canvas_to_pixel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._canvas_to_pixel" title="Lien vers cette définition"></a></dt>
+<dd><p>Convertit les coordonnees canvas en coordonnees pixel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee X sur le canvas.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><em>int</em></a>) – Coordonnee Y sur le canvas.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>Coordonnees (i, j) du pixel ou None si invalide.</p>
+</dd>
+<dt class="field-odd">Type renvoyé<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(disponible dans Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)">int</a>] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._on_left_click">
+<span class="sig-name descname"><span class="pre">_on_left_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._on_left_click"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._on_left_click" title="Lien vers cette définition"></a></dt>
+<dd><p>Gere le clic gauche pour definir le point de depart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Evenement Tkinter du clic.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._on_right_click">
+<span class="sig-name descname"><span class="pre">_on_right_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._on_right_click"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._on_right_click" title="Lien vers cette définition"></a></dt>
+<dd><p>Gere le clic droit pour definir le point d’arrivee.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Evenement Tkinter du clic.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._on_mouse_move">
+<span class="sig-name descname"><span class="pre">_on_mouse_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._on_mouse_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._on_mouse_move" title="Lien vers cette définition"></a></dt>
+<dd><p>Met a jour l’affichage des informations sous le curseur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Evenement Tkinter de mouvement.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._set_point_from_entry">
+<span class="sig-name descname"><span class="pre">_set_point_from_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._set_point_from_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._set_point_from_entry" title="Lien vers cette définition"></a></dt>
+<dd><p>Definit un point a partir des champs de saisie.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_var</strong> (<em>tk.StringVar</em>) – Variable contenant la coordonnee X.</p></li>
+<li><p><strong>y_var</strong> (<em>tk.StringVar</em>) – Variable contenant la coordonnee Y.</p></li>
+<li><p><strong>is_start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><em>bool</em></a>) – True pour le point de depart, False pour l’arrivee.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._set_start_from_entry">
+<span class="sig-name descname"><span class="pre">_set_start_from_entry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._set_start_from_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._set_start_from_entry" title="Lien vers cette définition"></a></dt>
+<dd><p>Definit le point de depart depuis les champs de saisie.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._set_end_from_entry">
+<span class="sig-name descname"><span class="pre">_set_end_from_entry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._set_end_from_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._set_end_from_entry" title="Lien vers cette définition"></a></dt>
+<dd><p>Definit le point d’arrivee depuis les champs de saisie.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._update_buttons_state">
+<span class="sig-name descname"><span class="pre">_update_buttons_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._update_buttons_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._update_buttons_state" title="Lien vers cette définition"></a></dt>
+<dd><p>Met a jour l’etat des boutons selon la selection des points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._on_algorithm_change">
+<span class="sig-name descname"><span class="pre">_on_algorithm_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._on_algorithm_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._on_algorithm_change" title="Lien vers cette définition"></a></dt>
+<dd><p>Gere le changement d’algorithme selectionne.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._compute_path">
+<span class="sig-name descname"><span class="pre">_compute_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._compute_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._compute_path" title="Lien vers cette définition"></a></dt>
+<dd><p>Lance le calcul du plus court chemin.</p>
+<p>Utilise l’algorithme selectionne (Dijkstra ou A*) pour calculer
+le chemin entre les points de depart et d’arrivee.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._compute_path_animated">
+<span class="sig-name descname"><span class="pre">_compute_path_animated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._compute_path_animated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._compute_path_animated" title="Lien vers cette définition"></a></dt>
+<dd><p>Lance le calcul du chemin avec animation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>algo</strong> – Instance de l’algorithme (Dijkstra ou AStar).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._animate_step">
+<span class="sig-name descname"><span class="pre">_animate_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._animate_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._animate_step" title="Lien vers cette définition"></a></dt>
+<dd><p>Execute une etape de l’animation de recherche.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._update_display_animated">
+<span class="sig-name descname"><span class="pre">_update_display_animated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._update_display_animated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._update_display_animated" title="Lien vers cette définition"></a></dt>
+<dd><p>Met a jour l’affichage pendant l’animation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._finish_animation">
+<span class="sig-name descname"><span class="pre">_finish_animation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._finish_animation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._finish_animation" title="Lien vers cette définition"></a></dt>
+<dd><p>Termine l’animation et affiche le resultat final.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>result</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(disponible dans Python v3.14)"><em>dict</em></a>) – Resultats du calcul de chemin.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._reset">
+<span class="sig-name descname"><span class="pre">_reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._reset" title="Lien vers cette définition"></a></dt>
+<dd><p>Reinitialise l’etat de l’application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application._show_matplotlib">
+<span class="sig-name descname"><span class="pre">_show_matplotlib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application._show_matplotlib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application._show_matplotlib" title="Lien vers cette définition"></a></dt>
+<dd><p>Affiche une visualisation detaillee avec Matplotlib.</p>
+<p>Cree une figure avec 4 sous-graphiques montrant l’image originale,
+l’image en niveaux de gris, la zone d’exploration et les statistiques.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gui.app.Application.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gui/app.html#Application.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gui.app.Application.run" title="Lien vers cette définition"></a></dt>
+<dd><p>Lance la boucle principale de l’application.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="core.html" class="btn btn-neutral float-left" title="Module Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2024.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
