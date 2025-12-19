@@ -56,7 +56,7 @@ class Application:
         self.image_offset = (0, 0)
         
         self.algorithm = tk.StringVar(value="dijkstra")
-        self.heuristic = tk.StringVar(value="intensity")
+        self.heuristic = tk.StringVar(value="Intensité")
         self.animation_enabled = tk.BooleanVar(value=False)
         self.is_animating = False
         
@@ -187,7 +187,7 @@ class Application:
         
         self.heuristic_combo = ttk.Combobox(astar_line,
             textvariable=self.heuristic,
-            values=['intensity', 'manhattan', 'euclidean', 'chebyshev'],
+            values=['Intensité', 'Manhattan', 'Euclidienne', 'Chebyshev'],
             state='disabled',
             font=('Segoe UI', 9),
             width=12)
@@ -478,7 +478,7 @@ class Application:
         self.zoom_level = min(self.max_zoom, self.zoom_level * 1.2)
         
         if old_zoom != self.zoom_level:
-            self._zoom_at_point(event, old_zoom)
+            self._zoom_at_point(event, old_zoom, animated=self.is_animating)
     
     def _zoom_out(self, event=None):
         """Zoom arrière"""
@@ -489,9 +489,9 @@ class Application:
         self.zoom_level = max(self.min_zoom, self.zoom_level / 1.2)
         
         if old_zoom != self.zoom_level:
-            self._zoom_at_point(event, old_zoom)
+            self._zoom_at_point(event, old_zoom, animated=self.is_animating)
     
-    def _zoom_at_point(self, event, old_zoom):
+    def _zoom_at_point(self, event, old_zoom, animated=False):
         """Zoom centré sur le point de la souris"""
         if event:
             x = self.canvas.canvasx(event.x)
@@ -501,12 +501,18 @@ class Application:
             new_x = x * scale_change
             new_y = y * scale_change
 
-            self._update_display()
+            if animated:
+                self._update_display_animated()
+            else:
+                self._update_display()
             
             self.canvas.xview_moveto((new_x - event.x) / (self.original_image.width * self.zoom_level))
             self.canvas.yview_moveto((new_y - event.y) / (self.original_image.height * self.zoom_level))
         else:
-            self._update_display()
+            if animated:
+                self._update_display_animated()
+            else:
+                self._update_display()
     
     def _calculate_scale(self):
         """Calcule le facteur d'échelle"""
@@ -670,8 +676,17 @@ class Application:
             return
         
         try:
+            # Mapper les noms français vers les clés anglaises
+            heuristic_map = {
+                'Intensité': 'intensity',
+                'Manhattan': 'manhattan', 
+                'Euclidienne': 'euclidean',
+                'Chebyshev': 'chebyshev'
+            }
+            
             if self.algorithm.get() == "astar":
-                algo = AStar(self.image_graph, heuristic=self.heuristic.get())
+                heuristic_key = heuristic_map.get(self.heuristic.get(), 'intensity')
+                algo = AStar(self.image_graph, heuristic=heuristic_key)
             else:
                 algo = Dijkstra(self.image_graph)
             
@@ -692,7 +707,6 @@ class Application:
     
     def _compute_path_animated(self, algo):
         """Calcule le chemin avec animation en temps réel"""
-        import time
         
         self.is_animating = True
         self.btn_compute.config(state=tk.DISABLED)
@@ -704,27 +718,35 @@ class Application:
         
         visited_steps = result.get('visited_steps', [])
         total_steps = len(visited_steps)
-        execution_time = result['execution_time']
         
         if total_steps == 0:
             self._finish_animation(result)
             return
         
-        # Calculer le délai entre chaque frame pour matcher le temps d'exécution
-        # On groupe les nœuds pour ne pas avoir trop de frames
-        max_frames = min(500, total_steps)  # Maximum 500 frames
+        # Paramètres d'animation optimisés
+        # Animation de 3 secondes max, minimum 30 FPS
+        target_duration = 3.0  # secondes
+        min_fps = 30
+        max_frames = int(target_duration * min_fps)
+        
+        # Calculer combien de nœuds par frame
         nodes_per_frame = max(1, total_steps // max_frames)
         
-        # Temps par frame pour que l'animation dure ~= execution_time (minimum 1ms)
-        time_per_frame = max(1, int((execution_time * 1000) / max_frames))
+        # Délai fixe pour fluidité (33ms = ~30 FPS)
+        time_per_frame = 33
         
         self.animation_visited = set()
-        self.animation_current = set()  # Pixels actuels (bleu)
+        self.animation_trail = []  # Liste des derniers pixels pour le gradient
+        self.trail_length = max(20, nodes_per_frame * 1)  # Trail proportionnel (2 frames)
         self.animation_steps = visited_steps
         self.animation_result = result
         self.animation_index = 0
         self.nodes_per_frame = nodes_per_frame
         self.animation_delay = time_per_frame
+        
+        # Pré-calculer l'image numpy pour optimiser (on la modifie directement)
+        self.animation_img_array = np.array(self.original_image).astype(np.float32)
+        self.animation_original_array = np.array(self.original_image).astype(np.float32)
         
         self._animate_step()
     
@@ -733,15 +755,28 @@ class Application:
         if not self.is_animating:
             return
         
-        # Les pixels "current" deviennent "visited" (orange)
-        self.animation_visited.update(self.animation_current)
-        self.animation_current.clear()
-        
-        # Ajouter les nouveaux nœuds comme "current" (bleu)
+        # Récupérer les nouveaux pixels pour cette frame
         end_index = min(self.animation_index + self.nodes_per_frame, len(self.animation_steps))
         
+        new_pixels = []
         for i in range(self.animation_index, end_index):
-            self.animation_current.add(self.animation_steps[i])
+            pixel = self.animation_steps[i]
+            new_pixels.append(pixel)
+            self.animation_visited.add(pixel)
+            
+            # Colorier en orange directement dans l'image (persistant)
+            pi, pj = pixel
+            alpha = 0.5
+            self.animation_img_array[pi, pj] = (
+                self.animation_original_array[pi, pj] * (1 - alpha) + 
+                np.array([255, 140, 0]) * alpha
+            )
+        
+        # Ajouter au trail (gradient bleu)
+        self.animation_trail.extend(new_pixels)
+        # Garder seulement les derniers pixels pour le gradient
+        if len(self.animation_trail) > self.trail_length:
+            self.animation_trail = self.animation_trail[-self.trail_length:]
         
         self.animation_index = end_index
         
@@ -755,47 +790,57 @@ class Application:
             self._finish_animation(self.animation_result)
     
     def _update_display_animated(self):
-        """Met à jour l'affichage pendant l'animation"""
+        """Met à jour l'affichage pendant l'animation avec gradient bleu"""
         if not self.original_image:
             return
         
-        # Convertir en RGBA pour la transparence
-        img = self.original_image.copy().convert('RGBA')
+        # Copier l'image avec les pixels orange (déjà appliqués)
+        img_array = self.animation_img_array.copy()
         
-        # Créer un calque transparent pour les pixels visités (orange)
-        overlay = Image.new('RGBA', img.size, (0, 0, 0, 0))
-        overlay_draw = ImageDraw.Draw(overlay)
+        # Dessiner le gradient bleu (trail des derniers pixels)
+        trail_len = len(self.animation_trail)
+        if trail_len > 0:
+            # Utiliser numpy vectorisé pour le gradient
+            trail_array = np.array(self.animation_trail)
+            rows = trail_array[:, 0]
+            cols = trail_array[:, 1]
+            
+            # Calculer les couleurs du gradient pour chaque pixel
+            progress = np.linspace(0, 1, trail_len)  # 0 = ancien, 1 = récent
+            
+            # Couleurs: bleu foncé (0, 80, 180) -> bleu vif (50, 200, 255)
+            r_vals = (50 * progress).astype(np.float32)
+            g_vals = (80 + 120 * progress).astype(np.float32)
+            b_vals = (180 + 75 * progress).astype(np.float32)
+            alphas = (0.7 + 0.3 * progress).astype(np.float32)  # 70% -> 100%
+            
+            # Appliquer le gradient
+            for idx in range(trail_len):
+                i, j = rows[idx], cols[idx]
+                alpha = alphas[idx]
+                color = np.array([r_vals[idx], g_vals[idx], b_vals[idx]])
+                img_array[i, j] = self.animation_original_array[i, j] * (1 - alpha) + color * alpha
         
-        # Dessiner les nœuds visités en orange semi-transparent (trail)
-        for (i, j) in self.animation_visited:
-            overlay_draw.point((j, i), fill=(255, 140, 0, 120))  # Orange avec alpha=120
+        # Convertir en image PIL
+        img_array = np.clip(img_array, 0, 255).astype(np.uint8)
+        img = Image.fromarray(img_array, 'RGB')
         
-        # Dessiner les nœuds actuels en bleu opaque (front de recherche)
-        for (i, j) in self.animation_current:
-            overlay_draw.point((j, i), fill=(0, 150, 255, 255))  # Bleu vif opaque
-        
-        # Fusionner l'overlay avec l'image
-        img = Image.alpha_composite(img, overlay)
-        
-        # Marqueurs start/end (sur l'image finale)
+        # Marqueurs start/end
         draw = ImageDraw.Draw(img)
         if self.start_pixel:
             i, j = self.start_pixel
-            draw.point((j, i), fill=(34, 197, 94, 255))
+            draw.point((j, i), fill=(34, 197, 94))
         
         if self.end_pixel:
             i, j = self.end_pixel
-            draw.point((j, i), fill=(239, 68, 68, 255))
-        
-        # Reconvertir en RGB pour l'affichage
-        img = img.convert('RGB')
+            draw.point((j, i), fill=(239, 68, 68))
         
         # Redimensionner
         new_width = int(img.width * self.zoom_level)
         new_height = int(img.height * self.zoom_level)
         
         if new_width > 0 and new_height > 0:
-            img_resized = img.resize((new_width, new_height), Image.NEAREST if self.zoom_level > 1 else Image.LANCZOS)
+            img_resized = img.resize((new_width, new_height), Image.NEAREST)
         else:
             img_resized = img
         
@@ -805,8 +850,8 @@ class Application:
         self.canvas.create_image(0, 0, image=self.photo_image, anchor=tk.NW)
         
         # Afficher la progression
-        progress = int(100 * self.animation_index / len(self.animation_steps))
-        self.cursor_label.config(text=f"Animation: {progress}% - Nœuds explorés: {len(self.animation_visited)}")
+        progress_pct = int(100 * self.animation_index / len(self.animation_steps))
+        self.cursor_label.config(text=f"Animation: {progress_pct}% - Nœuds explorés: {len(self.animation_visited)}")
     
     def _finish_animation(self, result):
         """Termine l'animation et affiche le résultat final"""
