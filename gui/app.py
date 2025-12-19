@@ -6,6 +6,15 @@ from matplotlib.patches import FancyBboxPatch
 import numpy as np
 import sys
 import os
+import ctypes
+
+try:
+    ctypes.windll.shcore.SetProcessDpiAwareness(2)
+except:
+    try:
+        ctypes.windll.user32.SetProcessDPIAware()
+    except:
+        pass
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core.graph import Graph
@@ -27,9 +36,9 @@ class Application:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Pathfinder")
-        self.root.geometry("1200x720")
+        self.root.geometry("1400x900")
         self.root.configure(bg=self.COLORS['bg'])
-        self.root.minsize(1200, 720)
+        self.root.minsize(1400,900)
         self._set_dark_title_bar()
         
         self.image_graph = self.original_image = self.photo_image = None
