@@ -56,6 +56,7 @@ class Application:
         self.image_offset = (0, 0)
         
         self.algorithm = tk.StringVar(value="dijkstra")
+        self.heuristic = tk.StringVar(value="intensity")
         self.animation_enabled = tk.BooleanVar(value=False)
         self.is_animating = False
         
@@ -121,6 +122,20 @@ class Application:
             width=10)
         style.map('Modern.Horizontal.TScrollbar',
             background=[('active', self.COLORS['primary']), ('!active', self.COLORS['border'])])
+        
+        # Style pour Combobox
+        style.configure('TCombobox',
+            fieldbackground=self.COLORS['bg'],
+            background=self.COLORS['card'],
+            foreground=self.COLORS['text'],
+            arrowcolor=self.COLORS['text'],
+            bordercolor=self.COLORS['border'],
+            lightcolor=self.COLORS['bg'],
+            darkcolor=self.COLORS['bg'])
+        style.map('TCombobox',
+            fieldbackground=[('readonly', self.COLORS['bg']), ('disabled', self.COLORS['surface'])],
+            foreground=[('disabled', self.COLORS['text_dim'])],
+            background=[('active', self.COLORS['primary'])])
     
     def _build_ui(self):
         """Construit l'interface utilisateur"""
@@ -148,15 +163,35 @@ class Application:
             variable=self.algorithm, value="dijkstra",
             font=('Segoe UI', 10), bg=self.COLORS['card'], fg=self.COLORS['text'],
             selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
-            activeforeground=self.COLORS['text'])
+            activeforeground=self.COLORS['text'],
+            command=self._on_algorithm_change)
         rb_dijkstra.pack(anchor='w')
         
-        rb_astar = tk.Radiobutton(algo_frame, text="A*",
+        # Frame pour A* + heuristique sur la même ligne
+        astar_line = tk.Frame(algo_frame, bg=self.COLORS['card'])
+        astar_line.pack(fill=tk.X, anchor='w')
+        
+        rb_astar = tk.Radiobutton(astar_line, text="A*",
             variable=self.algorithm, value="astar",
             font=('Segoe UI', 10), bg=self.COLORS['card'], fg=self.COLORS['text'],
             selectcolor=self.COLORS['bg'], activebackground=self.COLORS['card'],
-            activeforeground=self.COLORS['text'])
-        rb_astar.pack(anchor='w')
+            activeforeground=self.COLORS['text'],
+            command=self._on_algorithm_change)
+        rb_astar.pack(side=tk.LEFT)
+        
+        # Combobox heuristique à droite de A*
+        self.root.option_add('*TCombobox*Listbox.background', self.COLORS['bg'])
+        self.root.option_add('*TCombobox*Listbox.foreground', self.COLORS['text'])
+        self.root.option_add('*TCombobox*Listbox.selectBackground', self.COLORS['primary'])
+        self.root.option_add('*TCombobox*Listbox.selectForeground', self.COLORS['text'])
+        
+        self.heuristic_combo = ttk.Combobox(astar_line,
+            textvariable=self.heuristic,
+            values=['intensity', 'manhattan', 'euclidean', 'chebyshev'],
+            state='disabled',
+            font=('Segoe UI', 9),
+            width=12)
+        self.heuristic_combo.pack(side=tk.LEFT, padx=(10, 0))
         
         # Animation toggle
         anim_frame = tk.Frame(algo_card, bg=self.COLORS['card'])
@@ -619,6 +654,13 @@ class Application:
         has_points = self.start_pixel is not None and self.end_pixel is not None
         self.btn_compute.config(state=tk.NORMAL if has_points else tk.DISABLED)
     
+    def _on_algorithm_change(self):
+        """Active/désactive le sélecteur d'heuristique selon l'algorithme"""
+        if self.algorithm.get() == "astar":
+            self.heuristic_combo.config(state='readonly')
+        else:
+            self.heuristic_combo.config(state='disabled')
+    
     def _compute_path(self):
         """Calcule le plus court chemin"""
         if not self.start_pixel or not self.end_pixel:
@@ -629,7 +671,7 @@ class Application:
         
         try:
             if self.algorithm.get() == "astar":
-                algo = AStar(self.image_graph)
+                algo = AStar(self.image_graph, heuristic=self.heuristic.get())
             else:
                 algo = Dijkstra(self.image_graph)
             
@@ -677,6 +719,7 @@ class Application:
         time_per_frame = max(1, int((execution_time * 1000) / max_frames))
         
         self.animation_visited = set()
+        self.animation_current = set()  # Pixels actuels (bleu)
         self.animation_steps = visited_steps
         self.animation_result = result
         self.animation_index = 0
@@ -690,11 +733,15 @@ class Application:
         if not self.is_animating:
             return
         
-        # Ajouter les nœuds pour cette frame
+        # Les pixels "current" deviennent "visited" (orange)
+        self.animation_visited.update(self.animation_current)
+        self.animation_current.clear()
+        
+        # Ajouter les nouveaux nœuds comme "current" (bleu)
         end_index = min(self.animation_index + self.nodes_per_frame, len(self.animation_steps))
         
         for i in range(self.animation_index, end_index):
-            self.animation_visited.add(self.animation_steps[i])
+            self.animation_current.add(self.animation_steps[i])
         
         self.animation_index = end_index
         
@@ -712,21 +759,36 @@ class Application:
         if not self.original_image:
             return
         
-        img = self.original_image.copy()
-        draw = ImageDraw.Draw(img)
+        # Convertir en RGBA pour la transparence
+        img = self.original_image.copy().convert('RGBA')
         
-        # Dessiner les nœuds visités en jaune/orange
+        # Créer un calque transparent pour les pixels visités (orange)
+        overlay = Image.new('RGBA', img.size, (0, 0, 0, 0))
+        overlay_draw = ImageDraw.Draw(overlay)
+        
+        # Dessiner les nœuds visités en orange semi-transparent (trail)
         for (i, j) in self.animation_visited:
-            draw.point((j, i), fill=(255, 165, 0))  # Orange
+            overlay_draw.point((j, i), fill=(255, 140, 0, 120))  # Orange avec alpha=120
         
-        # Marqueurs start/end
+        # Dessiner les nœuds actuels en bleu opaque (front de recherche)
+        for (i, j) in self.animation_current:
+            overlay_draw.point((j, i), fill=(0, 150, 255, 255))  # Bleu vif opaque
+        
+        # Fusionner l'overlay avec l'image
+        img = Image.alpha_composite(img, overlay)
+        
+        # Marqueurs start/end (sur l'image finale)
+        draw = ImageDraw.Draw(img)
         if self.start_pixel:
             i, j = self.start_pixel
-            draw.point((j, i), fill=(34, 197, 94))
+            draw.point((j, i), fill=(34, 197, 94, 255))
         
         if self.end_pixel:
             i, j = self.end_pixel
-            draw.point((j, i), fill=(239, 68, 68))
+            draw.point((j, i), fill=(239, 68, 68, 255))
+        
+        # Reconvertir en RGB pour l'affichage
+        img = img.convert('RGB')
         
         # Redimensionner
         new_width = int(img.width * self.zoom_level)
@@ -883,9 +945,15 @@ class Application:
         path_len = len(self.current_path)
         distance = self.last_result['distance']
         nodes = self.last_result['nodes_visited']
+        heuristic_name = self.last_result.get('heuristic', '')
+        
+        # Titre algorithme avec heuristique si A*
+        algo_display = algo_name
+        if algo_name == 'A*' and heuristic_name:
+            algo_display = f"A* ({heuristic_name})"
         
         stats_lines = [
-            ("ALGORITHME", algo_name, True),
+            ("ALGORITHME", algo_display, True),
             ("", "", False),
             ("Dimensions", f"{w} × {h} px", False),
             ("Total pixels", f"{w*h:,}", False),
